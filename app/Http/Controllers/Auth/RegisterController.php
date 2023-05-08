@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
-use App\Models\Wilayah;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,10 +17,10 @@ class RegisterController extends Controller
     public function index()
     {;
 
-        $wilayah = new Wilayah();
+
         return view('Registrasi.Registrasi', [
             'panel' => 'santri',
-            'provinsi' => $wilayah->data('provinsi')
+
         ]);
     }
     public function registrasi()
