@@ -1,16 +1,23 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\BendaharaController;
-use App\Http\Controllers\DataSantriController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\WilayahController;
+
 use GuzzleHttp\Middleware;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\BendaharaController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DataSantriController;
+use App\Http\Controllers\PersediaanController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\PesananController;
+use App\Http\Controllers\ReservasiController;
+use App\Models\Pesanan;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,8 +33,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return redirect(route('daftarulang'));
-});
+    return view('Layout.App');
+})->name('home');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -38,53 +45,65 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [LoginController::class, 'forgetPasswordStore']);
     Route::get('/reset-password/{token}', [LoginController::class, 'resetPassword'])->name('password.reset');
     Route::post('/reset-password/{token}', [LoginController::class, 'resetPasswordStore']);
+
+    //Dashboard 
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/email/verify', [LoginController::class, 'verifyEmail'])->name('verification.notice');
     Route::get('/email/verify/{id}/{hash}', [LoginController::class, 'verificationEmail'])->middleware(['auth', 'signed'])->name('verification.verify');
     Route::post('/email/verification-notification', [LoginController::class, 'verifyEmailSend'])->middleware(['throttle:6,1'])->name('verification.send');
-    Route::get('/registrasi/otp/{nik}', [RegisterController::class, 'otp'])->name('otp');
-    Route::post('/registrasi/otp/{nik}', [RegisterController::class, 'storeotp']);
-    Route::get('/sendotp/{nik}', [RegisterController::class, 'sendotpback'])->name('sendotp');
-    Route::post('/sendotp/{nik}', [RegisterController::class, 'sendotpbackupdate']);
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+    //persediaan
+    Route::get('/persediaan', [PersediaanController::class, 'index'])->name('persediaan');
+    Route::post('/persediaan/add', [PersediaanController::class, 'store'])->name('persediaan.store');
+    Route::get('/persediaan/edit/{id}', [PersediaanController::class, 'edit'])->name('persediaan.edit');
+    Route::post('/persediaan/edit/{id}', [PersediaanController::class, 'update']);
+    Route::get('/persediaan/restock/{id}', [PersediaanController::class, 'restock'])->name('persediaan.resetock');
+    Route::post('/persediaan/restock/{id}', [PersediaanController::class, 'restockStore']);
+    Route::post('/persediaan/delete/{id}', [PersediaanController::class, 'delete'])->name('persediaan.delete');
+    Route::get('/persediaan/riwayat', [PersediaanController::class, 'riwayat'])->name('persediaan.riwayat');
+    Route::get('/persediaan/riwayat/edit/{id}', [PersediaanController::class, 'riwayatEdit'])->name('persediaan.riwayat.edit');
+    Route::post('/persediaan/riwayat/edit/{id}', [PersediaanController::class, 'riwayatUpdate'])->name('persediaan.riwayat.edit');
+    Route::post('/persediaan/riwayat/delete/{id}', [PersediaanController::class, 'riwayatDelete'])->name('persediaan.riwayat.delete');
+
+
+    //menu
+    Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+    Route::post('menu/create', [MenuController::class, 'create'])->name('menu.cretae');
+    Route::get('/menu/add/{id}', [MenuController::class, 'add'])->name('menu.add');
+    Route::post('/menu/add/{id}', [MenuController::class, 'store']);
+    Route::get('/menu/addPersediaan/{id}', [MenuController::class, 'addPersediaan'])->name('menu.addPersediaan');
+    Route::post('/menu/addPersediaan/persediaan', [MenuController::class, 'storePersediaan'])->name('menu.add.persediaan');
+    Route::post('/menu/addPersediaan/delete{id}', [MenuController::class, 'deletePersediaan'])->name('menu.add.persediaan.delete');
+    Route::get('/menu/detele{id}', [MenuController::class, 'delete'])->name('menu.delete');
+
+
+    //Pesanan 
+    Route::get('/pesanan/reservasi/add', [PesananController::class, 'add'])->name('pesanan.reservasi.add');
+    Route::post('/pesanan/reservasi/add', [PesananController::class, 'store']);
+    Route::get('/pesanan/reservasi/list/{id}', [PesananController::class, 'create'])->name('pesanan.reservasi.list');
+    Route::post('/pesanan/reservasi/list/{id}', [PesananController::class, 'listStore']);
+    Route::get('/pesanan/reservasi/deleteList/{id}', [PesananController::class, 'listDelete'])->name('pesanan.list.delete');
+    Route::post('/pesanan/addList/{id}', [PesananController::class, 'listAdd'])->name('pesanan.list.add');
+    Route::post('/pesanan/minList/{id}', [PesananController::class, 'listminus'])->name('pesanan.list.min');
+    Route::get('/pesanan/reservasi/status', [PesananController::class, ''])->name('pesanan.reservasi.status');
+    Route::get('/pesanan/reservasi/status/{id}', [PesananController::class, ''])->name('pesanan.reservasi.status');
+    Route::get('/pesanan/DownPayment/{id}', [PesananController::class, 'DP'])->name('pesanan.downpayment');
+
+    //reservasi 
+    Route::get('/pesanan/reservasi/add', [ReservasiController::class, 'add'])->name('pesanan.reservasi.add');
+    Route::post('/pesanan/reservasi/add', [ReservasiController::class, 'store']);
+    Route::get('/pesanan/reservasi/list/{id}', [ReservasiController::class, 'create'])->name('pesanan.reservasi.list');
+    Route::post('/pesanan/reservasi/list/{id}', [ReservasiController::class, 'listStore']);
+    Route::get('/pesanan/reservasi/deleteList/{id}', [ReservasiController::class, 'listDelete'])->name('pesanan.reservasi.list.delete');
+    Route::post('/pesanan/reservasi/addList/{id}', [ReservasiController::class, 'listAdd'])->name('pesanan.reservasi.list.add');
+    Route::post('/pesanan/reservasi/minList/{id}', [ReservasiController::class, 'listminus'])->name('pesanan.reservasi.list.min');
+    Route::get('/pesanan/reservasi/', [ReservasiController::class, 'index'])->name('pesanan.reservasi.index');
+    Route::get('/pesanan/reservasi/status/{id}', [ReservasiController::class, 'status'])->name('pesanan.reservasi.status');
+    Route::get('/pesanan/reservasi/pay/{id}', [ReservasiController::class, 'reservasi'])->name('pesanan.reservasi.pay');
+    Route::get('/pesanan/reservasi/DownPayment/{id}', [ReservasiController::class, 'DP'])->name('pesanan.reservasi.downpayment');
 });
-
-
-Route::middleware(['auth', 'otp', 'verified'])->group(function () {
-    Route::get('/datasantri/daftarulang', [DataSantriController::class, 'daftarulang'])->name('daftarulang');
-    Route::get('/datasantri/daftarulang/s/form', [DataSantriController::class, 'formdaftarulang'])->name('formdaftarulang')->middleware('daftarulang');
-    Route::post('/datasantri/daftarulang/s/form', [DataSantriController::class, 'updateformdaftarulang'])->middleware('daftarulang');
-    Route::get('/user/profile', [UserController::class, 'index'])->name('user.profile');
-    Route::get('/wifi', [UserController::class, 'wifi'])->name('user.wifi');
-    Route::post('/wifi/add', [UserController::class, 'addWiFi'])->name('user.wifi.add');
-    Route::post('/wifi/update', [UserController::class, 'updateWiFi'])->name('user.wifi.update');
-    Route::post('/wifi/aktif/delete', [UserController::class, 'deleteAktifWiFi'])->name('user.wifi.aktif.delete');
-    Route::get('/keuangan/tagihan', [BendaharaController::class, 'tagihan'])->name('bendahara.tagihan');
-    Route::middleware('bendahara')->group(function () {
-        Route::get('/datasantri/datadaftarulang', [DataSantriController::class, 'datadaftarulang'])->name('datadaftarulang');
-        Route::get('/datasantri', [DataSantriController::class, 'datasantri'])->name('datasantri');
-        Route::get('/datasantri/daftarulang/e/{nik}', [DataSantriController::class, 'editDataDaful'])->name('editDataDaful');
-        Route::post('/datasantri/daftarulang/e/{nik}', [DataSantriController::class, 'UpdateDataDaful']);
-        Route::get('/datasantri/daftarulang/d/{nik}', [DataSantriController::class, 'deleteDataDaful'])->name('deleteDataDaful');
-        Route::get('/keuangan/tagihan/manajer', [BendaharaController::class, 'tagihanManeger'])->name('bendahara.tagihan.menejer');
-        Route::get('/keuangan/tagihan/create', [BendaharaController::class, 'add'])->name('bendahara.add');
-        Route::post('/keuangan/tagihan/create', [BendaharaController::class, 'store']);
-        Route::get('/keuangan/tagihan/edit/{id}', [BendaharaController::class, 'edit'])->name('bendahara.edit');
-        Route::post('/keuangan/tagihan/edit/{id}', [BendaharaController::class, 'update']);
-        Route::get('/keuangan/tagihan/delete/{id}', [BendaharaController::class, 'delete'])->name('bendahara.delete');
-    });
-    Route::middleware('admin')->group(function () {
-        Route::get('/admin', [AdminController::class, 'police'])->name('police');
-        Route::get('/removeadmin/{nis}', [AdminController::class, 'remove'])->name('removeAdmin');
-        Route::post('/addadmin', [AdminController::class, 'add'])->name('addAdmin');
-        Route::get('/whatsapp', [AdminController::class, 'whatsapp'])->name('whatsapp');
-    });
-});
-
-
-
-Route::post('/cities', [WilayahController::class, 'kabupaten'])->name('cities');
-Route::post('/districts', [WilayahController::class, 'kecamatan'])->name('districts');
-Route::post('/villages', [WilayahController::class, 'desa'])->name('villages');

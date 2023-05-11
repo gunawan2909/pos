@@ -1,5 +1,5 @@
 <header class="relative bg-white dark:bg-darker">
-    <div class="flex items-center justify-between p-2 border-b dark:border-primary-darker">
+    <div class="flex items-center justify-between p-1 border-b dark:border-primary-darker">
         <!-- Mobile menu button -->
         <button @click="isMobileMainMenuOpen = !isMobileMainMenuOpen"
             class="p-1 transition-colors duration-200 rounded-md text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark md:hidden focus:outline-none focus:ring">
@@ -13,11 +13,11 @@
         </button>
 
         <!-- Brand -->
-        <a href="index.html"
+        <a href="{{ route('dashboard') }}"
             class="inline-block text-2xl font-bold tracking-wider uppercase text-primary-dark dark:text-light">
             <div class=" flex items-center ">
-                <h1 class=" text-3xl font-bold text-black">SSA</h1>
-                <img class=" h-[30px] w-40" src="{{ asset('img/LogoPondok.svg') }}" alt="">
+                <img class=" w-16" src="{{ asset('img/Logo.png') }}" alt="">
+                <h1 class=" text-xl font-bold text-black">Sirkel Coffe</h1>
             </div>
         </a>
 
@@ -182,6 +182,6 @@
     <!-- Mobile main manu -->
     <div class="border-b md:hidden dark:border-primary-darker" x-show="isMobileMainMenuOpen"
         @click.away="isMobileMainMenuOpen = false">
-        @include('Menu.Menu')
+        @include('Side.Menu')
     </div>
 </header>

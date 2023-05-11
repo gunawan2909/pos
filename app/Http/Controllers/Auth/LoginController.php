@@ -22,29 +22,18 @@ class LoginController extends Controller
     public function store()
     {
         $login = request()->validate([
-            'nis' => 'required',
+            'email' => 'required',
             'password' => 'required'
         ]);
-
-        $email = [
-            'email' => $login['nis'],
-            'password' => $login['password'],
-        ];
-
 
 
         if (Auth::attempt($login, request('remembered'))) {
             request()->session()->regenerate();
-
-            return redirect()->intended('/');
+            return redirect()->intended(route('dashboard'));
         }
-        if (Auth::attempt($email, request('remembered'))) {
-            request()->session()->regenerate();
 
-            return redirect()->intended('/');
-        }
         return back()->withErrors([
-            'email' => 'NIS atau Password anda salah',
+            'email' => 'Email dan Password tidak sesuai',
         ])->onlyInput('email');
     }
 

@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('pesanans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('meja_id');
-            $table->date('waktu');
+            $table->string('name');
+            $table->integer('jumlah');
+            $table->string('no_wa')->nullable();
+            $table->string('kind')->nullable();
+            $table->string('kode')->nullable();
+            $table->date('date');
+            $table->time('time');
+            $table->string('status');
             $table->timestamps();
         });
     }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('persediaans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('satuan');
             $table->integer('jumlah');
             $table->timestamps();
         });

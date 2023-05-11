@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->double('harga');
-            $table->string('keterangan');
-            $table->boolean('status');
+            $table->string('name')->nullable();
+            $table->double('harga')->nullable();
+            $table->string('keterangan')->nullable();
+            $table->string('foto')->nullable();
+            $table->boolean('status')->nullable();
             $table->timestamps();
         });
     }

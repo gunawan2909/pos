@@ -9,4 +9,9 @@ class PesananList extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function menu()
+    {
+        return  $this->hasOne(Menu::class, 'id', 'menu_id');
+    }
 }

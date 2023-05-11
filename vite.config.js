@@ -7,11 +7,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css', 
                 'resources/js/app.js',
-                'resources/img/backgroundLogin.png',
-                'resources/img/LogoPondok.svg',
-                'resources/img/otp.png',
-                'resources/img/registrasi.png',
-                'resources/img/sukses.png'
+            
         ],
             refresh: true,
         }),
