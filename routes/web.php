@@ -1,23 +1,24 @@
 <?php
 
 
+use App\Models\Menu;
+use App\Models\Pesanan;
 use GuzzleHttp\Middleware;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PesananController;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\BendaharaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DataSantriController;
 use App\Http\Controllers\PersediaanController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\MenuController;
-use App\Http\Controllers\PesananController;
-use App\Http\Controllers\ReservasiController;
-use App\Models\Pesanan;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +34,9 @@ use App\Models\Pesanan;
 
 
 Route::get('/', function () {
-    return view('LandingPage');
+    return view('LandingPage', [
+        'menu' => Menu::where('status', true)->get()
+    ]);
 })->name('home');
 // Route::get('/tes', [PesananController::class, 'tes']);
 
