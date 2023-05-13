@@ -12,6 +12,6 @@ class PesananList extends Model
 
     public function menu()
     {
-        return  $this->hasOne(Menu::class, 'id', 'menu_id');
+        return  $this->hasOne(Menu::class, 'id', 'menu_id')->withTrashed();
     }
 }

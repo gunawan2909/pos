@@ -20,7 +20,6 @@
                         <th>Nama</th>
                         <th>Tanggal</th>
                         <th>Waktu</th>
-                        <th>Jumlah</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -32,9 +31,8 @@
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->date }}</td>
                             <td>{{ $item->time }}</td>
-                            <td>{{ $item->jumlah }}</td>
                             <td>{{ $item->status }}</td>
-                            <td><a href="{{ route('pesanan.reservasi.pay', ['id' => $item->id]) }}">
+                            <td><a href="{{ route('pesanan.pay.seller', ['id' => $item->id]) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24">
                                         <path fill="currentColor"

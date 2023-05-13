@@ -19,35 +19,41 @@
                     <h1 class="text-xl font-semibold text-center">Reservasi</h1>
                     <form action="" method="post" class="space-y-6">
                         @csrf
-                        <input
-                            class="w-full px-4 py-2 border rounded-md dark:bg-darker dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary-100 dark:focus:ring-primary-darker"
-                            type="text" name="name" placeholder="Atas Nama" />
-                        @error('name')
-                            <span class=" text-[10px] text-red-500">{{ $message }}</span>
-                        @enderror
-                        <input
-                            class="w-full px-4 py-2 border rounded-md dark:bg-darker dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary-100 dark:focus:ring-primary-darker"
-                            type="text" name="no_wa" placeholder="No Telpon" />
-                        @error('no_wa')
-                            <span class=" text-[10px] text-red-500">{{ $message }}</span>
-                        @enderror
+                        <div class=" flex">
 
+                            <div class="flex flex-col w-full border-x-4 border-b rounded-xl p-2 border-primary">
+                                <div class=" flex">
+                                    <p class=" w-32">Atas Nama</p>
+                                    <p>: {{ $pesanan->name }}</p>
+                                </div>
+                                <div class=" flex">
+                                    <p class=" w-32">Tanggal</p>
+                                    <p>: {{ $pesanan->date }}</p>
+                                </div>
+                                <div class=" flex">
+                                    <p class=" w-32">Waktu</p>
+                                    <p>: {{ $pesanan->time }}</p>
+                                </div>
+
+
+
+
+                            </div>
+
+                        </div>
+                        <label class=" text-center justify-center flex" for="jumlah">Jumlah yang tersedia
+                            {{ $kuota }}
+                            orang</label>
                         <input
                             class="w-full px-4 py-2 border rounded-md dark:bg-darker dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary-100 dark:focus:ring-primary-darker"
-                            type="date" name="date" />
-                        @error('date')
-                            <span class=" text-[10px] text-red-500">{{ $message }}</span>
-                        @enderror
-                        <input
-                            class="w-full px-4 py-2 border rounded-md dark:bg-darker dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary-100 dark:focus:ring-primary-darker"
-                            type="time" name="time" />
-                        @error('time')
+                            type="number" name="jumlah" placeholder="Jumlah orang" id="jumlah" />
+                        @error('jumlah')
                             <span class=" text-[10px] text-red-500">{{ $message }}</span>
                         @enderror
 
                         <button type="submit"
                             class="w-full px-4 py-2 font-medium text-center text-white transition-colors duration-200 rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 dark:focus:ring-offset-darker">
-                            Lanjut
+                            Reservasi
                         </button>
                 </div>
                 </form>

@@ -33,8 +33,9 @@ use App\Models\Pesanan;
 
 
 Route::get('/', function () {
-    return view('Layout.App');
+    return view('LandingPage');
 })->name('home');
+// Route::get('/tes', [PesananController::class, 'tes']);
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -82,28 +83,37 @@ Route::middleware('auth')->group(function () {
     Route::get('/menu/detele{id}', [MenuController::class, 'delete'])->name('menu.delete');
 
 
-    //Pesanan 
-    Route::get('/pesanan/reservasi/add', [PesananController::class, 'add'])->name('pesanan.reservasi.add');
-    Route::post('/pesanan/reservasi/add', [PesananController::class, 'store']);
-    Route::get('/pesanan/reservasi/list/{id}', [PesananController::class, 'create'])->name('pesanan.reservasi.list');
-    Route::post('/pesanan/reservasi/list/{id}', [PesananController::class, 'listStore']);
-    Route::get('/pesanan/reservasi/deleteList/{id}', [PesananController::class, 'listDelete'])->name('pesanan.list.delete');
-    Route::post('/pesanan/addList/{id}', [PesananController::class, 'listAdd'])->name('pesanan.list.add');
-    Route::post('/pesanan/minList/{id}', [PesananController::class, 'listminus'])->name('pesanan.list.min');
-    Route::get('/pesanan/reservasi/status', [PesananController::class, ''])->name('pesanan.reservasi.status');
-    Route::get('/pesanan/reservasi/status/{id}', [PesananController::class, ''])->name('pesanan.reservasi.status');
-    Route::get('/pesanan/DownPayment/{id}', [PesananController::class, 'DP'])->name('pesanan.downpayment');
+    Route::get('/pesanan/pay/seller/{id}', [PesananController::class, 'invoiceSeller'])->name('pesanan.pay.seller');
+    Route::post('/pesanan/pay/seller/{id}', [PesananController::class, 'pay']);
+    Route::get('/pesanan/pesanan/', [PesananController::class, 'index'])->name('pesanan.pesanan.index');
 
-    //reservasi 
-    Route::get('/pesanan/reservasi/add', [ReservasiController::class, 'add'])->name('pesanan.reservasi.add');
-    Route::post('/pesanan/reservasi/add', [ReservasiController::class, 'store']);
-    Route::get('/pesanan/reservasi/list/{id}', [ReservasiController::class, 'create'])->name('pesanan.reservasi.list');
-    Route::post('/pesanan/reservasi/list/{id}', [ReservasiController::class, 'listStore']);
-    Route::get('/pesanan/reservasi/deleteList/{id}', [ReservasiController::class, 'listDelete'])->name('pesanan.reservasi.list.delete');
-    Route::post('/pesanan/reservasi/addList/{id}', [ReservasiController::class, 'listAdd'])->name('pesanan.reservasi.list.add');
-    Route::post('/pesanan/reservasi/minList/{id}', [ReservasiController::class, 'listminus'])->name('pesanan.reservasi.list.min');
     Route::get('/pesanan/reservasi/', [ReservasiController::class, 'index'])->name('pesanan.reservasi.index');
-    Route::get('/pesanan/reservasi/status/{id}', [ReservasiController::class, 'status'])->name('pesanan.reservasi.status');
     Route::get('/pesanan/reservasi/pay/{id}', [ReservasiController::class, 'reservasi'])->name('pesanan.reservasi.pay');
-    Route::get('/pesanan/reservasi/DownPayment/{id}', [ReservasiController::class, 'DP'])->name('pesanan.reservasi.downpayment');
 });
+//Pesanan 
+Route::get('/pesanan/add', [PesananController::class, 'add'])->name('pesanan.add');
+Route::post('/pesanan/add', [PesananController::class, 'store']);
+Route::get('/pesanan/list/{id}', [PesananController::class, 'create'])->name('pesanan.list');
+Route::post('/pesanan/list/{id}', [PesananController::class, 'listStore']);
+Route::get('/pesanan/deleteList/{id}', [PesananController::class, 'listDelete'])->name('pesanan.list.delete');
+Route::post('/pesanan/addList/{id}', [PesananController::class, 'listAdd'])->name('pesanan.list.add');
+Route::post('/pesanan/minList/{id}', [PesananController::class, 'listminus'])->name('pesanan.list.min');
+Route::get('/pesanan/invoice/{id}', [PesananController::class, 'invoice'])->name('pesanan.invoice');
+Route::get('/pesanan/status', [PesananController::class, ''])->name('pesanan.status');
+Route::get('/pesanan/status/{id}', [PesananController::class, ''])->name('pesanan.status');
+Route::get('/pesanan/pay/customer/{id}', [PesananController::class, 'payCustomer'])->name('pesanan.pay.customer');
+
+//reservasi 
+Route::get('/pesanan/reservasi/add', [ReservasiController::class, 'add'])->name('pesanan.reservasi.add');
+Route::post('/pesanan/reservasi/add', [ReservasiController::class, 'store']);
+Route::get('/pesanan/reservasi/list/{id}', [ReservasiController::class, 'create'])->name('pesanan.reservasi.list');
+Route::post('/pesanan/reservasi/list/{id}', [ReservasiController::class, 'listStore']);
+Route::get('/pesanan/reservasi/kuota/{id}', [ReservasiController::class, 'kuota'])->name('pesanan.reservasi.kuota');
+Route::post('/pesanan/reservasi/kuota/{id}', [ReservasiController::class, 'kuotaStore']);
+Route::get('/pesanan/reservasi/deleteList/{id}', [ReservasiController::class, 'listDelete'])->name('pesanan.reservasi.list.delete');
+Route::post('/pesanan/reservasi/addList/{id}', [ReservasiController::class, 'listAdd'])->name('pesanan.reservasi.list.add');
+Route::post('/pesanan/reservasi/minList/{id}', [ReservasiController::class, 'listminus'])->name('pesanan.reservasi.list.min');
+
+Route::get('/pesanan/reservasi/status/{id}', [ReservasiController::class, 'status'])->name('pesanan.reservasi.status');
+Route::get('/pesanan/reservasi/DownPayment/{id}', [ReservasiController::class, 'DP'])->name('pesanan.reservasi.downpayment');
+Route::post('/pesanan/pay/reservasi/{id}', [ReservasiController::class, 'pay'])->name('pesanan.pay.reservasi');

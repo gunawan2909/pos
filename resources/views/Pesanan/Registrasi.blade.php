@@ -16,7 +16,7 @@
             </a>
             <main>
                 <div class="w-full max-w-sm px-4 py-6 space-y-6 bg-white rounded-md dark:bg-darker">
-                    <h1 class="text-xl font-semibold text-center">Reservasi</h1>
+                    <h1 class="text-xl font-semibold text-center">Pesan</h1>
                     <form action="" method="post" class="space-y-6">
                         @csrf
                         <input
@@ -25,29 +25,18 @@
                         @error('name')
                             <span class=" text-[10px] text-red-500">{{ $message }}</span>
                         @enderror
-                        <input
-                            class="w-full px-4 py-2 border rounded-md dark:bg-darker dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary-100 dark:focus:ring-primary-darker"
-                            type="text" name="no_wa" placeholder="No Telpon" />
-                        @error('no_wa')
-                            <span class=" text-[10px] text-red-500">{{ $message }}</span>
-                        @enderror
 
                         <input
                             class="w-full px-4 py-2 border rounded-md dark:bg-darker dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary-100 dark:focus:ring-primary-darker"
-                            type="date" name="date" />
-                        @error('date')
+                            type="number" name="jumlah" placeholder="Jumlah orang" />
+                        @error('jumlah')
                             <span class=" text-[10px] text-red-500">{{ $message }}</span>
                         @enderror
-                        <input
-                            class="w-full px-4 py-2 border rounded-md dark:bg-darker dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary-100 dark:focus:ring-primary-darker"
-                            type="time" name="time" />
-                        @error('time')
-                            <span class=" text-[10px] text-red-500">{{ $message }}</span>
-                        @enderror
+
 
                         <button type="submit"
                             class="w-full px-4 py-2 font-medium text-center text-white transition-colors duration-200 rounded-md bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 dark:focus:ring-offset-darker">
-                            Lanjut
+                            Pesan
                         </button>
                 </div>
                 </form>

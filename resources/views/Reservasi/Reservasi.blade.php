@@ -30,6 +30,12 @@
                         <p class=" w-32">Status</p>
                         <p>: {{ $pesanan->status }}</p>
                     </div>
+                    <div class=" flex">
+                        <p class=" w-32">Total</p>
+                        <p>
+                            : Rp.{{ number_format($total * 2, 2, ',', '.') }}
+                        </p>
+                    </div>
 
 
 
@@ -52,58 +58,66 @@
                     </div>
                 </div>
             @endforeach
-            <div class="">
+            @if ($pesanan->status == 'Down Payment Paid')
+                <div class="">
 
-                <h1 class="font-bold border-b border-black">Rinngkasan Pembayaran</h1>
-                <h1 class=" text-slate-300">
-                    Total pesanan ( {{ $jumlah }} memu) Rp. {{ number_format($total * 2, 2, ',', '.') }}
-                </h1>
-                <h1 class="border-b-2 border-black">
-                    Down Payement yang sudah dibayar Rp. {{ number_format($total, 2, ',', '.') }}
-                    Total kekurangan Rp. {{ number_format($total, 2, ',', '.') }}
+                    <h1 class="font-bold border-b border-black">Rinngkasan Pembayaran</h1>
+                    <h1 class=" text-slate-300">
+                        Total pesanan ( {{ $jumlah }} memu) Rp. {{ number_format($total * 2, 2, ',', '.') }}
+                    </h1>
+                    <h1 class="border-b-2 border-black">
+                        Down Payement yang sudah dibayar Rp. {{ number_format($total, 2, ',', '.') }}
+                        Total kekurangan Rp. {{ number_format($total, 2, ',', '.') }}
 
-                </h1>
-            </div>
+                    </h1>
+                </div>
 
 
 
-            <div class="flex mt-4 w-full ">
-                <a class=" text-center text-primary border-primary border-2 py-1 mr-4 rounded-lg px-2 w-full"
-                    href="{{ route('pesanan.reservasi.list', ['id' => $pesanan->id]) }}">Tunai</a>
-                <button id="pay-button" class="bg-primary text-white py-1  rounded-lg px-2 w-full text-center  ">Non
-                    Tunai</button>
+                <div class="flex mt-4 w-full ">
+                    <form class="w-full mr-4" action="{{ route('pesanan.pay.reservasi', ['id' => $pesanan->id]) }}"
+                        method="post">
+                        @csrf
+                        <button class="w-full  text-center text-primary border-primary border-2 py-1  rounded-lg px-2"
+                            href="{{ route('pesanan.reservasi.list', ['id' => $pesanan->id]) }}">Tunai</button>
 
-            </div>
+                    </form>
+                    <button id="pay-button" class="bg-primary text-white py-1  rounded-lg px-2 w-full text-center  ">Non
+                        Tunai</button>
+
+                    <script type="text/javascript">
+                        // For example trigger on button clicked, or any time you need
+                        var payButton = document.getElementById('pay-button');
+                        payButton.addEventListener('click', function() {
+                            // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
+                            window.snap.pay('{{ $snapToken }}', {
+                                onSuccess: function(result) {
+                                    /* You may add your own implementation here */
+                                    alert("payment success!");
+                                    window.location.href =
+                                        "{{ route('pesanan.reservasi.status', ['id' => $pesanan->id]) }}"
+                                },
+                                onPending: function(result) {
+                                    /* You may add your own implementation here */
+                                    alert("wating your payment!");
+                                    console.log(result);
+                                },
+                                onError: function(result) {
+                                    /* You may add your own implementation here */
+                                    alert("payment failed!");
+                                    console.log(result);
+                                },
+                                onClose: function() {
+                                    /* You may add your own implementation here */
+                                    alert('you closed the popup without finishing the payment');
+                                }
+                            })
+                        });
+                    </script>
+                </div>
+            @endif
 
 
         </div>
     </div>
-    <script type="text/javascript">
-        // For example trigger on button clicked, or any time you need
-        var payButton = document.getElementById('pay-button');
-        payButton.addEventListener('click', function() {
-            // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
-            window.snap.pay('{{ $snapToken }}', {
-                onSuccess: function(result) {
-                    /* You may add your own implementation here */
-                    alert("payment success!");
-                    window.location.href = "{{ route('pesanan.downpayment', ['id' => $pesanan->id]) }}"
-                },
-                onPending: function(result) {
-                    /* You may add your own implementation here */
-                    alert("wating your payment!");
-                    console.log(result);
-                },
-                onError: function(result) {
-                    /* You may add your own implementation here */
-                    alert("payment failed!");
-                    console.log(result);
-                },
-                onClose: function() {
-                    /* You may add your own implementation here */
-                    alert('you closed the popup without finishing the payment');
-                }
-            })
-        });
-    </script>
 @endsection

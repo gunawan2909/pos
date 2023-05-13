@@ -59,6 +59,9 @@ class MenuController extends Controller
         } else {
             $data['foto'] = Menu::where('id', $id)->get()[0]->foto;
         }
+        if ($request['status'] == 'on') {
+            $data['status'] = true;
+        }
 
 
         Menu::where('id', $id)->update($data);
@@ -98,11 +101,15 @@ class MenuController extends Controller
 
     public function delete($id)
     {
+        $menu = Menu::where('id', $id)->get()[0];
         if (Menu::where('id', $id)->get()[0]->foto) {
 
             Storage::delete(Menu::where('id', $id)->get()[0]->foto);
         }
-        menu::destroy($id);
+        foreach ($menu->persediaan as $item) {
+            $item->delete();
+        }
+        $menu->delete();
         return redirect(route('menu'));
     }
 }

@@ -66,8 +66,13 @@ class PersediaanController extends Controller
 
     public function delete($id)
     {
-        Persediaan::destroy($id);
-        return redirect(route('persediaan'))->with('status', 'Persediaan berhasil dihapus');
+        $persediaan = Persediaan::where('id', $id)->get()[0];
+        if ($persediaan->list->count() < 1) {
+
+            Persediaan::where('id', $id)->delete();
+            return redirect(route('persediaan'))->with('status', 'Persediaan berhasil dihapus');
+        }
+        return redirect(route('persediaan'))->with('status', 'Persediaan tidak dapat dihapus terhubung dengan menu');
     }
 
     public function restock($id)

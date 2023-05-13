@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('satuan');
             $table->integer('jumlah');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\kas;
 use App\Models\Menu;
 use App\Models\Pesanan;
 use App\Models\PesananList;
@@ -20,21 +21,64 @@ class ReservasiController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'no_wa' => 'required',
-            'jumlah' => 'required',
             'date' => 'required',
             'time' => 'required',
         ]);
         $data['status'] = 'Unpaid';
+        $data['jumlah'] = 0;
+        $data['kind'] = "reservasi";
+
 
         $pesanan = Pesanan::create($data);
-        return redirect(route('pesanan.reservasi.list', ['id' => $pesanan->id]));
+        return redirect(route('pesanan.reservasi.kuota', ['id' => $pesanan->id]));
     }
 
 
+    public function kuota($id)
+    {
+        $pesanan = Pesanan::where('id', $id)->get()[0];
+        $kuota = 40;
+        foreach (Pesanan::where('date', $pesanan->date)->get() as $item) {
+            if (abs(strtotime($item->time) - strtotime($pesanan->time)) < 72000) {
+                $kuota -= $item->jumlah;
+            }
+        }
+
+
+        return view('Reservasi.Kuota', [
+            'pesanan' => $pesanan,
+            'kuota' => $kuota,
+            'menu' => Menu::where('status', true)->get()
+
+        ]);
+    }
+
+    public function kuotaStore($id, Request $request)
+    {
+        $pesanan = Pesanan::where('id', $id)->get()[0];
+        $kuota = 40;
+        foreach (Pesanan::where('date', $pesanan->date)->get() as $item) {
+            if (abs(strtotime($item->time) - strtotime($pesanan->time)) < 72000) {
+                $kuota -= $item->jumlah;
+            }
+        }
+        $role = 'required|numeric|max:' . $kuota;
+
+        $data = $request->validate([
+            'jumlah' => $role,
+
+        ]);
+        $pesanan->update($data);
+        return redirect(route('pesanan.reservasi.list', ['id' => $pesanan->id]));
+    }
+
     public function create($id)
     {
+        $pesanan = Pesanan::where('id', $id)->get()[0];
+
+
         return view('Reservasi.List', [
-            'pesanan' => Pesanan::where('id', $id)->get()[0],
+            'pesanan' => $pesanan,
             'menu' => Menu::where('status', true)->get()
 
         ]);
@@ -59,20 +103,21 @@ class ReservasiController extends Controller
 
     public function dp($id)
     {
-        \Midtrans\Config::$serverKey = config('midtrans.serverKey');
-        \Midtrans\Config::$isProduction = false;
-        \Midtrans\Config::$isSanitized = true;
-        \Midtrans\Config::$is3ds = true;
         $pesanan = Pesanan::where('id', $id)->get()[0];
         $total = 0;
 
         foreach ($pesanan->list as $item) {
             $total += ($item->menu->harga * $item->jumlah);
         }
+        
+        \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+        \Midtrans\Config::$isProduction = false;
+        \Midtrans\Config::$isSanitized = true;
+        \Midtrans\Config::$is3ds = true;
         $total = $total / 2;
         $params = array(
             'transaction_details' => array(
-                'order_id' => "pd-" . $pesanan->id,
+                'order_id' => "dp-" . $pesanan->id,
                 'gross_amount' => $total,
             ),
             'customer_details' => array(
@@ -92,30 +137,34 @@ class ReservasiController extends Controller
     }
     public function reservasi($id)
     {
-        \Midtrans\Config::$serverKey = config('midtrans.serverKey');
-        \Midtrans\Config::$isProduction = false;
-        \Midtrans\Config::$isSanitized = true;
-        \Midtrans\Config::$is3ds = true;
         $pesanan = Pesanan::where('id', $id)->get()[0];
         $total = 0;
 
         foreach ($pesanan->list as $item) {
             $total += ($item->menu->harga * $item->jumlah);
         }
-        $params = array(
-            'transaction_details' => array(
-                'order_id' => "po-" . $pesanan->id,
-                'gross_amount' => $total,
-            ),
-            'customer_details' => array(
-                'first_name' => $pesanan->name,
-                'last_name' => '',
-
-                'phone' => $pesanan->no_wa,
-            ),
-        );
         $total = $total / 2;
-        $snapToken = \Midtrans\Snap::getSnapToken($params);
+        $snapToken = '';
+        if ($pesanan->status == 'Down Payment Paid') {
+
+            \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+            \Midtrans\Config::$isProduction = false;
+            \Midtrans\Config::$isSanitized = true;
+            \Midtrans\Config::$is3ds = true;
+            $params = array(
+                'transaction_details' => array(
+                    'order_id' => "po-" . $pesanan->id,
+                    'gross_amount' => $total,
+                ),
+                'customer_details' => array(
+                    'first_name' => $pesanan->name,
+                    'last_name' => '',
+
+                    'phone' => $pesanan->no_wa,
+                ),
+            );
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+        }
         return view('Reservasi.Reservasi', [
             'pesanan' => Pesanan::where('id', $id)->get()[0],
             'total' => $total,
@@ -163,16 +212,23 @@ class ReservasiController extends Controller
     }
     public function pay($id)
     {
-        return view('Reservasi.Reservasi', [
-            'pesanan' => Pesanan::where('id', $id)->get()[0]
-        ]);
+        $total = 0;
+        $pesanan = Pesanan::where('id', $id)->get()[0];
+        foreach ($pesanan->list as $item) {
+            $total += ($item->menu->harga * $item->jumlah);
+        }
+        $total = $total / 2;
+        Pesanan::where('id', $id)->update(['status' => 'Paid']);
+        $kas = kas::where('name', 'tunai')->get()[0]->nominal  +  $total;
+        kas::where('name', 'tunai')->update(['nominal' => $kas]);
+        return redirect(route('pesanan.reservasi.index'));
     }
 
     public function index()
     {
         return view('Reservasi.Index', [
-            'pesanan' => Pesanan::where('status', '<>', 'Paid')->get(),
-            'panel' => ['', '']
+            'pesanan' => Pesanan::latest()->where('kind', 'reservasi')->get(),
+            'panel' => ['pesanan', 'reservasi']
         ]);
     }
 }

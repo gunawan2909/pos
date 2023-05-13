@@ -13,8 +13,6 @@ class PersediaanList extends Model
 
     public function persediaan()
     {
-        return  $this->hasOne(Persediaan::class, 'id', 'persediaan_id');
+        return  $this->hasOne(Persediaan::class, 'id', 'persediaan_id')->withTrashed();
     }
-
-    
 }

@@ -2,10 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Persediaan extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+    protected $guarded = ['id'];
+
+    public function list()
+    {
+        return $this->hasMany(PersediaanList::class, 'persediaan_id', 'id');
+    }
 }
