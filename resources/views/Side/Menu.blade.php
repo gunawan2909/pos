@@ -110,6 +110,10 @@
                 class="block p-2 text-sm {{ $panel[1] == 'no_reservasi' ? 'text-gray-700' : 'text-gray-400' }} transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700">
                 Langsung
             </a>
+            <a href="{{ route('pesanan.monitoring') }}" role="menuitem"
+                class="block p-2 text-sm {{ $panel[1] == 'monitoring' ? 'text-gray-700' : 'text-gray-400' }} transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700">
+                Monitoring
+            </a>
 
 
 

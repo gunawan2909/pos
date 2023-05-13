@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\kas;
 use App\Models\Menu;
 use App\Models\Pesanan;
+use App\Events\PesananPaid;
 use App\Models\PesananList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -145,6 +146,8 @@ class PesananController extends Controller
         Pesanan::where('id', $id)->update(['status' => 'Paid']);
         $kas = kas::where('name', 'tunai')->get()[0]->nominal  +  $total;
         kas::where('name', 'tunai')->update(['nominal' => $kas]);
+        event(new PesananPaid($id));
+
         return redirect(route('pesanan.pesanan.index'));
     }
     public function payCustomer($id)
@@ -172,6 +175,7 @@ class PesananController extends Controller
                 }
                 if ($data[0] == 'po') {
                     Pesanan::where('id', $data[1])->update(['status' => 'Paid']);
+                    event(new PesananPaid($data[1]));
                 }
             }
         }
@@ -197,11 +201,23 @@ class PesananController extends Controller
         ]);
     }
 
-    // public function tes()
-    // {
-    //     for ($i = 1; $i <= 100; $i++) {
-    //         $massage = 'Ini Link bukti pembayaran anda  pesanan.reservasi.s untuk tindakan keamanan tambahan. Mohon tidak menyebarkannya. Terima kasih atas perhatian Anda.';
-    //         Http::post('https://ppnh.co.id:2053/send-message', ['number' => '085741718236', 'message' => $massage]);
-    //     }
-    // }
+    public function monitoring()
+    {
+        return view('Pesanan.Monitoring', [
+            'panel' => ['pesanan', 'monitoring'],
+            'pesanans' => Pesanan::where('status', 'Paid')->get(),
+        ]);
+    }
+    public function complited($id)
+    {
+        $pesanan = Pesanan::where('id', $id)->get()[0];
+        foreach ($pesanan->list as $list) {
+            foreach ($list->menu->persediaan as $persediaanlist) {
+                $jumlah =  $persediaanlist->persediaan->jumlah - $persediaanlist->jumlah * $list->jumlah;
+                $persediaanlist->persediaan->update(['jumlah' => $jumlah]);
+            }
+        }
+        Pesanan::where('id', $id)->update(['status' => 'Complited']);
+        return back();
+    }
 }

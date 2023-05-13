@@ -69,7 +69,7 @@
 
                             </td>
                             <td>
-                                <input type="text" name="jumlah" class=" px-2" placeholder="Dalam KG/L/Pcs">
+                                <input type="text" name="jumlah" class=" px-2" placeholder="Dalam gram/ml/Pcs">
                                 <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                             </td>
                             <td>
@@ -89,7 +89,7 @@
                         </tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->persediaan->name }}</td>
-                        <td>{{ $item->jumlah }}</td>
+                        <td>{{ $item->jumlah }} {{ $item->persediaan->satuan }}</td>
                         <td>
                             <form action="{{ route('menu.add.persediaan.delete', ['id' => $item->id]) }}" method="post">
                                 @csrf

@@ -35,8 +35,8 @@
                             <td>
                                 <select name="satuan">
                                     <option value="">Pilih salah satu</option>
-                                    <option value="Kg">Kg</option>
-                                    <option value="Liter">Liter</option>
+                                    <option value="gram">gram</option>
+                                    <option value="ml">ml</option>
                                     <option value="Pcs">Pcs</option>
                                 </select>
                             </td>
@@ -67,9 +67,9 @@
                                     <td>
                                         {{ $item->jumlah }}
                                         <select name="satuan">
-                                            <option @if ($item->satuan == 'Kg') selected @endif value="Kg">Kg
+                                            <option @if ($item->satuan == 'gram') selected @endif value="gram">gram
                                             </option>
-                                            <option @if ($item->satuan == 'Liter') selected @endif value="Liter">Liter
+                                            <option @if ($item->satuan == 'liter') selected @endif value="ml">ml
                                             </option>
                                             <option @if ($item->satuan == 'Pcs') selected @endif value="Pcs">Pcs
                                             </option>

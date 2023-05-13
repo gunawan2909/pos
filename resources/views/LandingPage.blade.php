@@ -537,5 +537,14 @@
             </div>
         </footer>
         <script src="https://unpkg.com/flowbite@1.4.1/dist/flowbite.js"></script>
+        {{-- <script>
+            document.addEventListener("DOMContentLoaded", function(event) {
+
+                Echo.channel('Pesanan')
+                    .listen('PesananPaid', (e) => {
+                        console.log(e);
+                    });
+            });
+        </script> --}}
     </body>
 @endsection

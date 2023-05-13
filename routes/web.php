@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Events\PesananPaid;
 use App\Models\Menu;
 use App\Models\Pesanan;
 use GuzzleHttp\Middleware;
@@ -38,7 +38,9 @@ Route::get('/', function () {
         'menu' => Menu::where('status', true)->get()
     ]);
 })->name('home');
-// Route::get('/tes', [PesananController::class, 'tes']);
+Route::get('/tes', function () {
+    event(new PesananPaid(11));
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -92,6 +94,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pesanan/reservasi/', [ReservasiController::class, 'index'])->name('pesanan.reservasi.index');
     Route::get('/pesanan/reservasi/pay/{id}', [ReservasiController::class, 'reservasi'])->name('pesanan.reservasi.pay');
+    Route::post('/pesanan/pay/reservasi/{id}', [ReservasiController::class, 'pay'])->name('pesanan.pay.reservasi');
+
+    Route::get('/pesanan/monitoring', [PesananController::class, 'monitoring'])->name('pesanan.monitoring');
+    Route::post('/pesanan/status/complited/{id}', [PesananController::class, 'complited'])->name('pesanan.status.complited');
 });
 //Pesanan 
 Route::get('/pesanan/add', [PesananController::class, 'add'])->name('pesanan.add');
@@ -119,4 +125,3 @@ Route::post('/pesanan/reservasi/minList/{id}', [ReservasiController::class, 'lis
 
 Route::get('/pesanan/reservasi/status/{id}', [ReservasiController::class, 'status'])->name('pesanan.reservasi.status');
 Route::get('/pesanan/reservasi/DownPayment/{id}', [ReservasiController::class, 'DP'])->name('pesanan.reservasi.downpayment');
-Route::post('/pesanan/pay/reservasi/{id}', [ReservasiController::class, 'pay'])->name('pesanan.pay.reservasi');
