@@ -256,7 +256,8 @@
                 <div class="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
                     @foreach ($menu as $item)
                         <div class=" rounded-lg shadow-lg bg-white pb-1 w-40">
-                            <img class=" object-cover rounded-t-lg " src="{{ asset($item->foto) }}" alt="">
+                            <img class=" object-cover rounded-t-lg " src="{{ asset('storage/' . $item->foto) }}"
+                                alt="">
                             <div method="post" action="" class=" px-2 pb-3  flex flex-col ">
                                 <p class="">{{ $item->name }}</p>
                                 <p class=" truncate  text-[12px]">{{ $item->keterangan }}</p>
