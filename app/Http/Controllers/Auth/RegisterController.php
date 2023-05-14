@@ -31,7 +31,7 @@ class RegisterController extends Controller
         $data['password'] = bcrypt($data['password']);
         User::create($data);
         Auth::attempt((request()->only('email', 'password')));
-        event(new Registered(Auth::user()));
+        // event(new Registered(Auth::user()));
         return redirect(route('dashboard'));
     }
 }
