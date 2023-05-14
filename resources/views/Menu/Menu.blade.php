@@ -12,7 +12,7 @@
         <div class=" grid grid-cols-3 mt-3">
             @foreach ($menu as $item)
                 <div class=" rounded-lg shadow-lg bg-white pb-1 w-60">
-                    <img class=" object-cover rounded-t-lg " src="{{ asset($item->foto) }}" alt="">
+                    <img class=" object-cover rounded-t-lg " src="{{ asset('storage/' . $item->foto) }}" alt="">
                     <div class=" px-2 pb-3  flex flex-col ">
                         <p class="">{{ $item->name }}</p>
                         <p class=" truncate  text-[12px]">{{ $item->keterangan }}</p>
