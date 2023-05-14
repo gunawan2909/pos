@@ -1,4 +1,4 @@
-@extends('layout.Dashboard')
+@extends('Layout.Dashboard')
 @section('dashboard')
     <div class="  p-3">
         <div class=" flex items-center ">
@@ -27,7 +27,7 @@
                 </div>
                 @foreach ($pesanan->list as $item)
                     <div class="flex my-3 border-y-2 p-1 ">
-                        <img class="w-24 rounded-md " src="{{ asset('storage/'.$item->menu->foto) }}" alt="">
+                        <img class="w-24 rounded-md " src="{{ asset('storage/' . $item->menu->foto) }}" alt="">
                         <div class="ml-3">
                             <p>{{ $item->menu->name }}</p>
                             <p class=" text-xs">Catatan Khusus : <span class="font-semibold">{{ $item->keterangan }}</span>
