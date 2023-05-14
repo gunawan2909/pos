@@ -1,4 +1,4 @@
-@extends('Layout.app')
+@extends('Layout.App')
 @section('content')
     <div x-data="setup()" x-init="$refs.loading.classList.add('hidden');
     setColors(color);">

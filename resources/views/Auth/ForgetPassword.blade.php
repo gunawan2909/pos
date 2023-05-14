@@ -1,4 +1,4 @@
-@extends('Layout.app')
+@extends('Layout.App')
 @section('content')
     <form action="{{ route('password.request') }}" method="POST"
         class=" flex flex-col items-center justify-center h-full w-full">
