@@ -73,7 +73,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/persediaan/delete/{id}', [PersediaanController::class, 'delete'])->name('persediaan.delete');
     Route::get('/persediaan/riwayat', [PersediaanController::class, 'riwayat'])->name('persediaan.riwayat');
     Route::get('/persediaan/riwayat/edit/{id}', [PersediaanController::class, 'riwayatEdit'])->name('persediaan.riwayat.edit');
-    Route::post('/persediaan/riwayat/edit/{id}', [PersediaanController::class, 'riwayatUpdate'])->name('persediaan.riwayat.edit');
+    Route::post('/persediaan/riwayat/edit/{id}', [PersediaanController::class, 'riwayatUpdate']);
     Route::post('/persediaan/riwayat/delete/{id}', [PersediaanController::class, 'riwayatDelete'])->name('persediaan.riwayat.delete');
 
 
