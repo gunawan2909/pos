@@ -1,4 +1,4 @@
-@extends('Layout.app')
+@extends('Layout.App')
 @section('content')
 
     <body>
