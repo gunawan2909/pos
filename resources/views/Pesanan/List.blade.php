@@ -39,7 +39,7 @@
 
             @foreach ($pesanan->list as $item)
                 <div class="flex my-3 border-y-2 p-1">
-                    <img class="w-24 rounded-md " src="{{ asset('storage/'.$item->menu->foto) }}" alt="">
+                    <img class="w-24 rounded-md " src="{{ asset('storage/' . $item->menu->foto) }}" alt="">
                     <div class="ml-3">
                         <p>{{ $item->menu->name }}</p>
                         <p class=" text-xs">Catatan Khusus : <span class="font-semibold">{{ $item->keterangan }}</span></p>
@@ -100,7 +100,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mt-3 gap-4">
             @foreach ($menu as $item)
                 <div class=" rounded-lg shadow-lg bg-white pb-1 w-40">
-                    <img class=" object-cover rounded-t-lg " src="{{ asset($item->foto) }}" alt="">
+                    <img class=" object-cover rounded-t-lg " src="{{ asset('storage/' . $item->foto) }}" alt="">
                     <form method="post" action="" class=" px-2 pb-3  flex flex-col ">
                         @csrf
                         <p class="">{{ $item->name }}</p>
