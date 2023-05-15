@@ -18,16 +18,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        kas::create(['name' => 'tunai', 'nominal' => 100000000]);
+        kas::create(['name' => 'tunai', 'nominal' => 0]);
+        kas::create(['name' => 'non tunai', 'nominal' => 0]);
         Persediaan::create([
             'name' => 'Gula',
             'jumlah' => 10,
-            'satuan' => 'Kg'
+            'satuan' => 'gram'
         ]);
         Persediaan::create([
             'name' => 'Teh',
             'jumlah' => 10,
-            'satuan' => 'Kg'
+            'satuan' => 'gram'
         ]);
 
 

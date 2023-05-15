@@ -7,6 +7,7 @@ use App\Models\Menu;
 use App\Models\Pesanan;
 use App\Events\PesananPaid;
 use App\Models\PesananList;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Contracts\Cache\Store;
@@ -79,7 +80,7 @@ class PesananController extends Controller
 
             $params = array(
                 'transaction_details' => array(
-                    'order_id' => "po-" . $pesanan->id,
+                    'order_id' => "c" . $pesanan->id . "-" . rand(),
                     'gross_amount' => $total,
                 ),
                 'customer_details' => array(
@@ -115,7 +116,7 @@ class PesananController extends Controller
             \Midtrans\Config::$is3ds = true;
             $params = array(
                 'transaction_details' => array(
-                    'order_id' => "po-" . $pesanan->id,
+                    'order_id' => "po-" . $pesanan->id . "-" . rand(),
                     'gross_amount' => $total,
                 ),
                 'customer_details' => array(
@@ -146,8 +147,16 @@ class PesananController extends Controller
         Pesanan::where('id', $id)->update(['status' => 'Paid']);
         $kas = kas::where('name', 'tunai')->get()[0]->nominal  +  $total;
         kas::where('name', 'tunai')->update(['nominal' => $kas]);
+        $keterangan = "Pendapatan Penjualan " . $pesanan->name;
+        $kind = "600";
+        $transaksi = Transaksi::create([
+            'keterangan' => $keterangan,
+            'kind' => $kind,
+            'nominal' => $total,
+            'status' => "Sukses",
+            'metode' => "Tunai",
+        ]);
         event(new PesananPaid($id));
-
         return redirect(route('pesanan.pesanan.index'));
     }
     public function payCustomer($id)
@@ -170,11 +179,35 @@ class PesananController extends Controller
                 if ($data[0] == 'dp') {
                     $pesanan = Pesanan::where('id', $data[1])->get();
                     Pesanan::where('id', $data[1])->update(['status' => 'Down Payment Paid']);
+                    $keterangan = "Pendapatan Penjualan Dp  " . $pesanan->name;
+                    $kind = "600";
+                    $transaksi = Transaksi::create([
+                        'keterangan' => $keterangan,
+                        'kind' => $kind,
+                        'nominal' => $request->gross_amount,
+                        'status' => "Sukses",
+                        'metode' => "No Tunai",
+                    ]);
+                    $kas = kas::where('name', 'non tunai')->get()[0]->nominal  +  $request->gross_amount;
+                    kas::where('name', 'non tunai')->update(['nominal' => $kas]);
+                    event(new PesananPaid($data[1]));
                     $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.reservasi.status', ['id' => $data[1]])  . '* untuk tindakan keamanan tambahan. Mohon tidak menyebarkannya. Terima kasih atas perhatian Anda.';
                     Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan[0]->no_wa, 'message' => $massage]);
                 }
                 if ($data[0] == 'po') {
+                    $pesanan = Pesanan::where('id', $data[1])->get();
                     Pesanan::where('id', $data[1])->update(['status' => 'Paid']);
+                    $keterangan = "Pendapatan Penjualan / Pelunasan Dp  " . $pesanan->name;
+                    $kind = "600";
+                    $transaksi = Transaksi::create([
+                        'keterangan' => $keterangan,
+                        'kind' => $kind,
+                        'nominal' => $request->gross_amount,
+                        'status' => "Sukses",
+                        'metode' => "No Tunai",
+                    ]);
+                    $kas = kas::where('name', 'non tunai')->get()[0]->nominal  +  $request->gross_amount;
+                    kas::where('name', 'non tunai')->update(['nominal' => $kas]);
                     event(new PesananPaid($data[1]));
                 }
             }

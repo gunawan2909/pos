@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\kas;
 use App\Models\Menu;
 use App\Models\Pesanan;
+use App\Models\Transaksi;
 use App\Models\PesananList;
 use Illuminate\Http\Request;
 
@@ -109,7 +110,7 @@ class ReservasiController extends Controller
         foreach ($pesanan->list as $item) {
             $total += ($item->menu->harga * $item->jumlah);
         }
-        
+
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
@@ -117,7 +118,7 @@ class ReservasiController extends Controller
         $total = $total / 2;
         $params = array(
             'transaction_details' => array(
-                'order_id' => "dp-" . $pesanan->id,
+                'order_id' => "dp-" . $pesanan->id . "-" . rand(),
                 'gross_amount' => $total,
             ),
             'customer_details' => array(
@@ -153,7 +154,7 @@ class ReservasiController extends Controller
             \Midtrans\Config::$is3ds = true;
             $params = array(
                 'transaction_details' => array(
-                    'order_id' => "po-" . $pesanan->id,
+                    'order_id' => "po-" . $pesanan->id . "-" . rand(),
                     'gross_amount' => $total,
                 ),
                 'customer_details' => array(
@@ -221,6 +222,15 @@ class ReservasiController extends Controller
         Pesanan::where('id', $id)->update(['status' => 'Paid']);
         $kas = kas::where('name', 'tunai')->get()[0]->nominal  +  $total;
         kas::where('name', 'tunai')->update(['nominal' => $kas]);
+        $keterangan = "Pendapatan Penjualan / Pelunasan Dp  " . $pesanan->name;
+        $kind = "600";
+        $transaksi = Transaksi::create([
+            'keterangan' => $keterangan,
+            'kind' => $kind,
+            'nominal' => $total,
+            'status' => "Sukses",
+            'metode' => "Tunai",
+        ]);
         return redirect(route('pesanan.reservasi.index'));
     }
 

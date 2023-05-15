@@ -19,6 +19,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DataSantriController;
 use App\Http\Controllers\PersediaanController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\TransaksiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,6 +100,25 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pesanan/monitoring', [PesananController::class, 'monitoring'])->name('pesanan.monitoring');
     Route::post('/pesanan/status/complited/{id}', [PesananController::class, 'complited'])->name('pesanan.status.complited');
+
+
+    //Laporan 
+    Route::get('/laporan', [TransaksiController::class, 'index'])->name('laporan.index');
+
+
+    //user
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    Route::get('/user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+    Route::post('/user/edit/{id}', [UserController::class, 'update']);
+    Route::post('/user/delete/{id}', [UserController::class, 'delete'])->name('user.detele');
+
+    //jabatan 
+    Route::get('/jabatan', [JabatanController::class, 'index'])->name('jabatan.index');
+    Route::get('/jabatan/add', [JabatanController::class, 'add'])->name('jabatan.add');
+    Route::post('/jabatan/add', [JabatanController::class, 'store']);
+    Route::get('/jabatan/edit/{id}', [JabatanController::class, 'edit'])->name('jabatan.edit');
+    Route::post('/jabatan/edit/{id}', [JabatanController::class, 'store']);
+    Route::post('/jabatan/delete/{id}', [JabatanController::class, 'delete'])->name('jabatan.delete');
 });
 //Pesanan 
 Route::get('/pesanan/add', [PesananController::class, 'add'])->name('pesanan.add');

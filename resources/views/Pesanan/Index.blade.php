@@ -1,7 +1,7 @@
 @extends('Layout.Dashboard')
 @section('dashboard')
     <div class=" p-2">
-        <h1 class="text-2xl ">Reservasi</h1>
+        <h1 class="text-2xl ">Pesanan Langsung</h1>
         <div class="flex flex-col w-full bg-white shadow-md px-3 py-4 mb-10 mt-3">
 
             <div class=" flex my-3">

@@ -101,8 +101,8 @@ class PersediaanController extends Controller
             'keterangan' => $keterangan,
             'kind' => $kind,
             'nominal' => $request->nominal,
-            'status' => "sukses",
-            'metode' => "tunai",
+            'status' => "Sukses",
+            'metode' => "Tunai",
         ]);
         $data['kuitansi'] = $kuitansi;
         $data['transaksi_id'] = $transaksi->id;

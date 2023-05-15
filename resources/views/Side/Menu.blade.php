@@ -121,6 +121,82 @@
 
         </div>
     </div>
+    <div x-data="{{ $panel[0] == 'user' ? '{isActive: true, open: true}' : '{isActive: false, open: false}' }}">
+        <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
+        <a href="#" @click="$event.preventDefault(); open = !open"
+            class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
+            :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
+            :aria-expanded="(open || isActive) ? 'true' : 'false'">
+            <span aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                    <path fill="currentColor"
+                        d="M6.002 4a1.998 1.998 0 1 1 3.996 0a1.998 1.998 0 0 1-3.996 0ZM8 3.002a.998.998 0 1 0 0 1.996a.998.998 0 0 0 0-1.996ZM11 4.5a1.5 1.5 0 1 1 3 0a1.5 1.5 0 0 1-3 0Zm1.5-.5a.5.5 0 1 0 0 1a.5.5 0 0 0 0-1Zm-9-1a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3ZM3 4.5a.5.5 0 1 1 1 0a.5.5 0 0 1-1 0ZM4.268 7A1.99 1.99 0 0 0 4 8H2v2.5a1.5 1.5 0 0 0 2.096 1.377c.074.331.19.647.34.942A2.5 2.5 0 0 1 1 10.5V8a1 1 0 0 1 1-1h2.268Zm7.296 5.819A2.5 2.5 0 0 0 15 10.5V8a1 1 0 0 0-1-1h-2.268c.17.294.268.635.268 1h2v2.5a1.5 1.5 0 0 1-2.096 1.377c-.075.331-.19.647-.34.942ZM6 6.999a1 1 0 0 0-1 1V11a3 3 0 0 0 6 0V8a1 1 0 0 0-1-1H6Zm0 1h4V11a2 2 0 0 1-4 0V8Z" />
+                </svg>
+            </span>
+            <span class="ml-2 text-sm"> Karyawan </span>
+            <span class="ml-auto" aria-hidden="true">
+                <!-- active class 'rotate-180' -->
+                <svg class="w-4 h-4 transition-transform transform" :class="{ 'rotate-180': open }"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </span>
+        </a>
+        <div role="menu" x-show="open" class="mt-2 space-y-2 px-7" aria-label="Dashboards">
+            <!-- active & hover classes 'text-gray-700 dark:text-light' -->
+            <!-- inActive classes 'text-gray-400 dark:text-gray-400' -->
+
+            <a href="{{ route('user.index') }}" role="menuitem"
+                class="block p-2 text-sm {{ $panel[1] == 'user' ? 'text-gray-700' : 'text-gray-400' }} transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700">
+                Anggota
+            </a>
+            <a href="{{ route('jabatan.index') }}" role="menuitem"
+                class="block p-2 text-sm {{ $panel[1] == 'jabatan' ? 'text-gray-700' : 'text-gray-400' }} transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700">
+                Jabatan
+            </a>
+
+
+
+
+
+        </div>
+    </div>
+    <div x-data="{{ $panel[0] == 'laporan' ? '{isActive: true, open: true}' : '{isActive: false, open: false}' }}">
+        <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
+        <a href="#" @click="$event.preventDefault(); open = !open"
+            class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
+            :class="{ 'bg-primary-100 dark:bg-primary': isActive || open }" role="button" aria-haspopup="true"
+            :aria-expanded="(open || isActive) ? 'true' : 'false'">
+            <span aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                        d="m6 16.5l-3 2.94V11h3m5 3.66l-1.57-1.34L8 14.64V7h3m5 6l-3 3V3h3m2.81 9.81L17 11h5v5l-1.79-1.79L13 21.36l-3.47-3.02L5.75 22H3l6.47-6.34L13 18.64" />
+                </svg>
+            </span>
+            <span class="ml-2 text-sm"> Laporan </span>
+            <span class="ml-auto" aria-hidden="true">
+                <!-- active class 'rotate-180' -->
+                <svg class="w-4 h-4 transition-transform transform" :class="{ 'rotate-180': open }"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </span>
+        </a>
+        <div role="menu" x-show="open" class="mt-2 space-y-2 px-7" aria-label="Dashboards">
+            <!-- active & hover classes 'text-gray-700 dark:text-light' -->
+            <!-- inActive classes 'text-gray-400 dark:text-gray-400' -->
+
+            <a href="{{ route('laporan.index') }}" role="menuitem"
+                class="block p-2 text-sm {{ $panel[1] == 'laporan' ? 'text-gray-700' : 'text-gray-400' }} transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700">
+                Laporan
+            </a>
+
+
+
+
+
+        </div>
+    </div>
 
 
 
