@@ -129,7 +129,7 @@ Route::get('/pesanan/deleteList/{id}', [PesananController::class, 'listDelete'])
 Route::post('/pesanan/addList/{id}', [PesananController::class, 'listAdd'])->name('pesanan.list.add');
 Route::post('/pesanan/minList/{id}', [PesananController::class, 'listminus'])->name('pesanan.list.min');
 Route::get('/pesanan/invoice/{id}', [PesananController::class, 'invoice'])->name('pesanan.invoice');
-Route::get('/pesanan/status/{id}', [PesananController::class, ''])->name('pesanan.status');
+Route::get('/pesanan/status/{id}', [PesananController::class, 'status'])->name('pesanan.status');
 Route::get('/pesanan/pay/customer/{id}', [PesananController::class, 'payCustomer'])->name('pesanan.pay.customer');
 
 //reservasi 

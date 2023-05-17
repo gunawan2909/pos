@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Jadwal;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
@@ -32,6 +33,7 @@ class RegisterController extends Controller
         User::create($data);
         Auth::attempt((request()->only('email', 'password')));
         // event(new Registered(Auth::user()));
+        Jadwal::create(['user_id' => Auth::user()->id]);
         return redirect(route('dashboard'));
     }
 }

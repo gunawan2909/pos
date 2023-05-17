@@ -1,7 +1,7 @@
 @extends('Layout.Dashboard')
 @section('dashboard')
     <div class="p-2">
-        <h1 class="font-bold text-2xl my-2 ">Laporan Transaksi</h1>
+        <h1 class="font-bold text-2xl my-2 ">Riwayat Absen</h1>
         <div class="flex flex-col w-full bg-white shadow-md px-3 py-1 mb-10 mt-3">
             <h1 class=" font-bold text-xl text-center">Kas </h1>
             @foreach ($kas as $item)
@@ -125,22 +125,18 @@
                 <thead class="border-b border-slate-500 text-sm">
                     <tr>
                         <th>No</th>
-                        <th>Tanggal</th>
-                        <th>Keterangan</th>
-                        <th>Moninal</th>
-                        <th>Metode</th>
+                        <th>Nama</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
 
-                    @foreach ($transaksi as $item)
+                    @foreach ($absen as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ date('d-M-Y', strtotime($item->created_at)) }}</td>
-                            <td>{{ $item->keterangan }}</td>
-                            <td>Rp.{{ number_format($item->nominal) }}</td>
-                            <td>{{ $item->metode }}</td>
+                            <td>{{ $item->user->name }}</td>
+                            <td>{{ $item->created_at }}</td>
                             <td>{{ $item->status }}</td>
                         </tr>
                     @endforeach
@@ -148,16 +144,16 @@
                 </tbody>
             </table>
             <div class=" flex w-full pl-3  pt-3 border-t border-blue-950">
-                <p>Halaman {{ $transaksi->currentPage() }} Dari {{ $transaksi->lastPage() }} </p>
+                <p>Halaman {{ $absen->currentPage() }} Dari {{ $absen->lastPage() }} </p>
                 <div class="ml-auto flex text-lg font-bold">
 
                     <a
-                        @if ($transaksi->previousPageUrl()) class="mr-10 " href="{{ $transaksi->previousPageUrl() }}&pagination={{ $page }}&search={{ $search }}&bulan={{ $bulan }}&tahun={{ $tahun }}&kind={{ $kind }}&metode={{ $tmetode }}"
-                    @else class="mr-10 text-slate-300" @endif>
+                        @if ($absen->previousPageUrl()) class="mr-10 " href="{{ $absen->previousPageUrl() }}&pagination={{ $page }}&search={{ $search }}&bulan={{ $bulan }}&tahun={{ $tahun }}&kind={{ $kind }}&metode={{ $tmetode }}"
+                @else class="mr-10 text-slate-300" @endif>
                         < </a>
 
                             <a
-                                @if ($transaksi->nextPageUrl()) class="mr-10 " href="{{ $transaksi->nextPageUrl() }}&pagination={{ $page }}&search={{ $search }}&bulan={{ $bulan }}&tahun={{ $tahun }}&kind={{ $kind }}&metode={{ $tmetode }}" @else class="mr-10 text-slate-300" @endif>>
+                                @if ($absen->nextPageUrl()) class="mr-10 " href="{{ $absen->nextPageUrl() }}&pagination={{ $page }}&search={{ $search }}&bulan={{ $bulan }}&tahun={{ $tahun }}&kind={{ $kind }}&metode={{ $tmetode }}" @else class="mr-10 text-slate-300" @endif>>
                             </a>
                 </div>
             </div>

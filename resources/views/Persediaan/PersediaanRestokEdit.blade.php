@@ -2,7 +2,7 @@
 @section('dashboard')
     <div class=" p-2">
         <H1 class=" font-bold text-3xl">Restock {{ $riwayat->persediaan->name }}</H1>
-        <div class=" bg-white rounded-sm p-6 rounded-md shadow-md w-fit">
+        <div class=" bg-white  p-6 rounded-md shadow-md w-fit">
             <p class=" ">
                 Jumlah Stok hari ini sebanyak
                 <span class=" font-bold">

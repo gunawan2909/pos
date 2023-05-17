@@ -50,13 +50,13 @@
                     $jumlah += $item->jumlah;
                 @endphp
                 <div class="flex my-3 border-y-2 p-1">
-                    <img class="w-24 rounded-md " src="{{ asset('storage/'.$item->menu->foto) }}" alt="">
+                    <img class="w-24 rounded-md " src="{{ asset('storage/' . $item->menu->foto) }}" alt="">
                     <div class="ml-3">
                         <p>{{ $item->menu->name }}</p>
                         <p class=" text-xs">Catatan Khusus : <span class="font-semibold">{{ $item->keterangan }}</span></p>
                         <p class="font-bold">Rp. {{ number_format($item->menu->harga, 2, ',', '.') }}</p>
                     </div>
-                    @if ($pesanan->status != 'Paid')
+                    @if ($pesanan->status == 'Unpaid')
                         <div class=" ml-auto items-end flex space-x-4 fill-slate-500">
                             <a class="mr-10 border-l-2 px-2  justify-end flex"
                                 href="{{ route('pesanan.reservasi.list.delete', ['id' => $item->id]) }}">
@@ -141,7 +141,7 @@
                         /* You may add your own implementation here */
                         alert("payment success!");
                         window.location.href =
-                            "{{ route('pesanan.reservasi.add') }}"
+                            "{{ route('home') }}"
                     },
                     onPending: function(result) {
                         /* You may add your own implementation here */

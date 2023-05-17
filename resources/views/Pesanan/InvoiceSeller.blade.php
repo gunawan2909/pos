@@ -98,7 +98,7 @@
                     @endif
                 </div>
             @endforeach
-            @if ($pesanan->status != 'Paid')
+            @if ($pesanan->status == 'Unpaid')
                 <div class="">
 
                     <h1 class="font-bold border-b border-black">Rinngkasan Pembayaran</h1>

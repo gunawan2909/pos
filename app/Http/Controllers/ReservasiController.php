@@ -8,6 +8,7 @@ use App\Models\Pesanan;
 use App\Models\Transaksi;
 use App\Models\PesananList;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ReservasiController extends Controller
 {
@@ -231,6 +232,8 @@ class ReservasiController extends Controller
             'status' => "Sukses",
             'metode' => "Tunai",
         ]);
+        $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.status', ['id' => $id])  . '*  Terima kasih atas perhatian Anda.';
+        Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan->no_wa, 'message' => $massage]);
         return redirect(route('pesanan.reservasi.index'));
     }
 

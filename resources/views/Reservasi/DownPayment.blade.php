@@ -94,7 +94,7 @@
                 onSuccess: function(result) {
                     /* You may add your own implementation here */
                     alert("payment success!");
-                    window.location.href = "{{ route('pesanan.downpayment', ['id' => $pesanan->id]) }}"
+                    window.location.href = "{{ route('home') }}"
                 },
                 onPending: function(result) {
                     /* You may add your own implementation here */

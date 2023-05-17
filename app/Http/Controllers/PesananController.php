@@ -25,11 +25,12 @@ class PesananController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'jumlah' => 'required',
+            'no_wa' => 'required'
         ]);
         $data['status'] = 'Unpaid';
         $data['date'] = now();
         $data['time'] = now();
-        $data['no_wa'] = "-";
+
         $data['kind'] = "no_reservasi";
 
         $pesanan = Pesanan::create($data);
@@ -157,6 +158,8 @@ class PesananController extends Controller
             'metode' => "Tunai",
         ]);
         event(new PesananPaid($id));
+        $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.status', ['id' => $id])  . '*  Terima kasih atas perhatian Anda.';
+        Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan->no_wa, 'message' => $massage]);
         return redirect(route('pesanan.pesanan.index'));
     }
     public function payCustomer($id)
@@ -177,8 +180,9 @@ class PesananController extends Controller
             if ($request->transaction_status == 'capture') {
                 $data = explode('-', $request->order_id);
                 if ($data[0] == 'dp') {
-                    $pesanan = Pesanan::where('id', $data[1])->get();
+                    $pesanan = Pesanan::where('id', $data[1])->get()[0];
                     Pesanan::where('id', $data[1])->update(['status' => 'Down Payment Paid']);
+
                     $keterangan = "Pendapatan Penjualan Dp  " . $pesanan->name;
                     $kind = "600";
                     $transaksi = Transaksi::create([
@@ -190,12 +194,11 @@ class PesananController extends Controller
                     ]);
                     $kas = kas::where('name', 'non tunai')->get()[0]->nominal  +  $request->gross_amount;
                     kas::where('name', 'non tunai')->update(['nominal' => $kas]);
-                    event(new PesananPaid($data[1]));
-                    $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.reservasi.status', ['id' => $data[1]])  . '* untuk tindakan keamanan tambahan. Mohon tidak menyebarkannya. Terima kasih atas perhatian Anda.';
-                    Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan[0]->no_wa, 'message' => $massage]);
+                    $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.status', ['id' => $data[1]])  . '*  Terima kasih atas perhatian Anda.';
+                    Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan->no_wa, 'message' => $massage]);
                 }
                 if ($data[0] == 'po') {
-                    $pesanan = Pesanan::where('id', $data[1])->get();
+                    $pesanan = Pesanan::where('id', $data[1])->get()[0];
                     Pesanan::where('id', $data[1])->update(['status' => 'Paid']);
                     $keterangan = "Pendapatan Penjualan / Pelunasan Dp  " . $pesanan->name;
                     $kind = "600";
@@ -209,6 +212,8 @@ class PesananController extends Controller
                     $kas = kas::where('name', 'non tunai')->get()[0]->nominal  +  $request->gross_amount;
                     kas::where('name', 'non tunai')->update(['nominal' => $kas]);
                     event(new PesananPaid($data[1]));
+                    $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.status', ['id' => $data[1]])  . '*  Terima kasih atas perhatian Anda.';
+                    Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan->no_wa, 'message' => $massage]);
                 }
             }
         }
@@ -252,5 +257,20 @@ class PesananController extends Controller
         }
         Pesanan::where('id', $id)->update(['status' => 'Complited']);
         return back();
+    }
+
+
+    public function status($id)
+    {
+        $total = 0;
+        $pesanan = Pesanan::where('id', $id)->get()[0];
+        foreach ($pesanan->list as $item) {
+            $total += ($item->menu->harga * $item->jumlah);
+        }
+        $total = $total;
+        return view('Pesanan.Status', [
+            'pesanan' => Pesanan::where('id', $id)->get()[0],
+            'total' => $total
+        ]);
     }
 }

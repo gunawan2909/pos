@@ -11,16 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jadwals', function (Blueprint $table) {
+        Schema::create('riwayat_absens', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->string('senin')->nullable();
-            $table->string('selasa')->nullable();
-            $table->string('rabu')->nullable();
-            $table->string('kamis')->nullable();
-            $table->string('jumat')->nullable();
-            $table->string('sabtu')->nullable();
-            $table->string('minggu')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -30,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jadwals');
+        Schema::dropIfExists('riwayat_absens');
     }
 };
