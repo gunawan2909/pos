@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('riwayat_persediaans', function (Blueprint $table) {
             $table->id();
-            $table->integer('jumlah');
+            $table->integer('jumlah')->lenght(100);
             $table->double('nominal');
-            $table->foreignId('persediaan_id');
-            $table->foreignId('transaksi_id');
-            $table->string('kuitansi');
+            $table->foreignId('persediaan_id')->constrained('persediaans');
+            $table->foreignId('transaksi_id')->constrained('transaksis');
+            $table->string('kuitansi',100);
             $table->timestamps();
         });
     }

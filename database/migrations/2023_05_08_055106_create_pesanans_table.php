@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('pesanans', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('jumlah');
-            $table->string('no_wa')->nullable();
-            $table->string('kind')->nullable();
-            $table->string('kode')->nullable();
+            $table->string('name', 50);
+            $table->integer('jumlah')->lenght(4);
+            $table->string('no_wa', 15)->nullable();
+            $table->string('kind', 20)->nullable();
             $table->date('date');
             $table->time('time');
             $table->string('status');

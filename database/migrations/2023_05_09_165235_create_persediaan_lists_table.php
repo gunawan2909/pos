@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('persediaan_lists', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('persediaan_id');
-            $table->foreignId('menu_id');
+            $table->foreignId('persediaan_id')->constrained('persediaans');
+            $table->foreignId('menu_id')->constrained('menus');
             $table->double('jumlah');
             $table->timestamps();
         });

@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
             $table->string('keterangan');
-            $table->string('kind');
-            $table->string('status');
-            $table->string('metode');
+            $table->string('kind', 50);
+            $table->string('status', 10);
+            $table->string('metode', 10);
             $table->double('nominal');
             $table->timestamps();
         });
