@@ -1,5 +1,5 @@
 <nav aria-label="Main" class="flex-1 px-2 py-4 space-y-2 overflow-y-hidden hover:overflow-y-auto">
-    @if (Auth::user->jabatan_id == 1)
+    @if (Auth::user()->jabatan_id == 1)
         <div x-data="{{ $panel[0] == 'persediaan' ? '{isActive: true, open: true}' : '{isActive: false, open: false}' }}">
             <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
             <a href="#" @click="$event.preventDefault(); open = !open"
@@ -123,7 +123,7 @@
         </div>
     </div>
 
-    @if (Auth::user->jabatan_id == 1)
+    @if (Auth::user()->jabatan_id == 1)
         <div x-data="{{ $panel[0] == 'user' ? '{isActive: true, open: true}' : '{isActive: false, open: false}' }}">
             <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
             <a href="#" @click="$event.preventDefault(); open = !open"
