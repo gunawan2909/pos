@@ -66,7 +66,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'otp' => \App\Http\Middleware\otp::class,
         'daftarulang' => \App\Http\Middleware\DaftarUlang::class,
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
-        'bendahara' => \App\Http\Middleware\BendaharaMiddleware::class,
+        'owner' => \App\Http\Middleware\Onwner::class,
+        'karyawan' => \App\Http\Middleware\Karyawan::class,
     ];
 }

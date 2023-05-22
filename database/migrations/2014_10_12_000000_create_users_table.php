@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password', 80);
             $table->rememberToken();
             $table->foreignId('jabatan_id')->nullable()->constrained('jabatans');
+            $table->string('foto')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

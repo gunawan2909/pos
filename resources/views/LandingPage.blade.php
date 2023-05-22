@@ -253,6 +253,21 @@
         </section> --}}
         <!-- End block -->
         <!-- Start block -->
+        <section class="bg-gray-50 dark:bg-gray-800">
+            <div class="max-w-screen-xl px-4 py-8 mx-auto lg:py-16 lg:px-6">
+                <div class="max-w-screen-sm mx-auto text-center">
+                    <h2 class="mb-4 text-3xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white">
+                        Ayo pesan</h2>
+
+                    <a href="{{ route('pesanan.reservasi.add') }}"
+                        class="text-white bg-primary hover:bg-blue-950 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-blue-950">
+                        Reservasi</a>
+                    <a href="{{ route('pesanan.add') }}"
+                        class="text-white  bg-primary hover:bg-blue-950 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-blue-950">
+                        Pesan Langusng</a>
+                </div>
+            </div>
+        </section>
         <section class="bg-white dark:bg-gray-900">
             <div class="max-w-screen-xl px-4 py-8 mx-auto lg:py-24 lg:px-6">
                 <div class="max-w-screen-md mx-auto mb-8 text-center lg:mb-12">
@@ -261,7 +276,7 @@
                         semangatmu. Contohnya beberapa menu yang kami punya yang tentunya naikin
                         moodmu sehingga bisa semangat buat kerja.</p>
                 </div>
-                <div class="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
+                <div class="space-y-8 lg:grid lg:grid-cols-5 sm:gap-6 xl:gap-10 lg:space-y-0">
                     @foreach ($menu as $item)
                         <div class=" rounded-lg shadow-lg bg-white pb-1 w-40">
                             <img class=" object-cover rounded-t-lg " src="{{ asset('storage/' . $item->foto) }}"

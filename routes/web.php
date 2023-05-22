@@ -40,9 +40,9 @@ Route::get('/', function () {
         'menu' => Menu::where('status', true)->get()
     ]);
 })->name('home');
-Route::get('/tes', function () {
-    event(new PesananPaid(11));
-});
+Route::get('/karyawan', function () {
+    return view('Auth.Karyawan');
+})->name('karyawan');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -57,7 +57,7 @@ Route::middleware('guest')->group(function () {
     //Dashboard 
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'karyawan')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/email/verify', [LoginController::class, 'verifyEmail'])->name('verification.notice');
     Route::get('/email/verify/{id}/{hash}', [LoginController::class, 'verificationEmail'])->middleware(['auth', 'signed'])->name('verification.verify');
@@ -111,6 +111,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
     Route::post('/user/edit/{id}', [UserController::class, 'update']);
     Route::post('/user/delete/{id}', [UserController::class, 'delete'])->name('user.detele');
+    Route::get('/user/setting', [UserController::class, 'setting'])->name('user.setting');
+    Route::post('/user/setting', [UserController::class, 'settingStore']);
 
     //jabatan 
     Route::get('/jabatan', [JabatanController::class, 'index'])->name('jabatan.index');

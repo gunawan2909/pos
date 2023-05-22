@@ -11,6 +11,7 @@ class TransaksiController extends Controller
     public function index()
     {
         $page = request(['pagination'][0]) ?? 10;
+        $hari = request(['hari'][0]) ?? date('d');
         $bulan = request(['bulan'][0]) ?? date('m');
         $tahun = request(['tahun'][0]) ?? date('Y');
         $kind = request(['kind'][0]) ?? '';
@@ -27,12 +28,13 @@ class TransaksiController extends Controller
         }
 
         return view('Laporan.Index', [
-            'transaksi' => Transaksi::orderBy('created_at', 'asc')->filter(request(['search', 'kind', 'metode']))->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->paginate($page),
+            'transaksi' => Transaksi::orderBy('created_at', 'asc')->filter(request(['search', 'kind', 'metode']))->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->whereDay('created_at', $hari)->paginate($page),
             'search' => request()->search,
             'page' => $page,
             'panel' => ['laporan', 'laporan'],
             'bulan' => $bulan,
             'tahun' => $tahun,
+            'hari' => $hari,
             'kind' => $kind,
             'metode' => $metode,
             'kas' => kas::all()

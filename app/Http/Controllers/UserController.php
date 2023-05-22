@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jabatan;
 use App\Models\User;
+use App\Models\Jabatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -43,5 +44,25 @@ class UserController extends Controller
     {
         User::where('id', $id)->delete($id);
         return redirect(route('user.index'));
+    }
+
+    public function setting()
+    {
+        return view('User.Setting', [
+            'user' => Auth::user(),
+            'panel' => ['', '']
+        ]);
+    }
+
+    public function settingStore(Request $request)
+    {
+        $request->validate([
+            'foto' => 'image|max:5000'
+        ]);
+
+        $foto = 'storage/' . $request->file('foto')->store('user');
+
+        User::where('id', Auth::user()->id)->update(['foto' => $foto]);
+        return redirect(route('dashboard'));
     }
 }
