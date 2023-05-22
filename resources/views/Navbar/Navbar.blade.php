@@ -69,7 +69,7 @@
                     class="transition-opacity duration-200 rounded-full dark:opacity-75 dark:hover:opacity-100 focus:outline-none focus:ring dark:focus:opacity-100">
                     <span class="sr-only">User menu</span>
                     <img class="w-10 h-10 rounded-full"
-                        src="{{ Auth::user()->foto ?? 'https://i.pinimg.com/564x/f9/60/1e/f9601e36faed8ae64edab524cdb6e7f9.jpg' }}"
+                        src="{{ asset(Auth::user()->foto) ?? 'https://i.pinimg.com/564x/f9/60/1e/f9601e36faed8ae64edab524cdb6e7f9.jpg' }}"
                         alt="Ahmed Kamel" />
                 </button>
 
