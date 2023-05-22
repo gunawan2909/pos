@@ -8,8 +8,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('Dashboard.Dashboard', [
-            'panel' => ['dashboard', 'dashboard']
-        ]);
+        return redirect(route('laporan.index'));
+        // return view('Dashboard.Dashboard', [
+        //     'panel' => ['dashboard', 'dashboard']
+        // ]);
     }
 }
