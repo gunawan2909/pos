@@ -12,13 +12,11 @@ class MenuController extends Controller
 {
     public function index()
     {
-        $page = request()->pagination ?? 10;
         return view('Menu.Menu', [
             'panel' => ['menu', 'index'],
-            'page' => $page,
             'search' => request()->search,
             'persediaan' => Persediaan::all(),
-            'menu' => Menu::latest()->paginate($page)
+            'menu' => Menu::latest()->get()
         ]);
     }
 
@@ -62,7 +60,9 @@ class MenuController extends Controller
         if ($request['status'] == 'on') {
             $data['status'] = true;
         }
-
+        if ($request['status'] == null) {
+            $data['status'] = false;
+        }
 
         Menu::where('id', $id)->update($data);
         return redirect(route('menu.addPersediaan', ['id' => $id]));
