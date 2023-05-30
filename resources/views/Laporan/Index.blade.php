@@ -80,12 +80,13 @@
             </div>
             <div>
                 <form class=" flex items-center ">
-                    <p class=" w-16">Hari</p>
+                    <p class=" w-16">Tanggal</p>
                     <input type="hidden" name="bulan" value="{{ $bulan }}">
                     <input type="hidden" name="tahun" value="{{ $tahun }}">
                     <input type="hidden" name="search" value="{{ $search }}">
                     <input type="hidden" name="pagination" value="{{ $page }}">
                     <select name="hari" id="" class=" border-slate-400 border-2 px-2">
+                        <option value="All">All</option>
                         @for ($con = 1; $con < 32; $con++)
                             <option value="{{ $con }}" {{ $con == $hari ? 'selected' : '' }}>
                                 {{ $con }}
@@ -149,14 +150,32 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ date('d-M-Y', strtotime($item->created_at)) }}</td>
                             <td>{{ $item->keterangan }}</td>
-                            <td>Rp.{{ number_format($item->nominal) }}</td>
+                            <td>
+                                <div class="{{ $item->kind == '500' ? 'text-red-500' : 'text-green-500' }} rounded-lg">
+                                    Rp.{{ number_format($item->nominal) }}
+                                </div>
+                            </td>
                             <td>{{ $item->metode }}</td>
                             <td>{{ $item->status }}</td>
                         </tr>
+                        @php
+                            $cont = 0;
+                            if ($item->kind == 500) {
+                                $cont -= $item->nominal;
+                            } else {
+                                $cont += $item->nominal;
+                            }
+                        @endphp
                     @endforeach
-
+                    <tr class=" border-t border-black font-bold">
+                        <td colspan="3">
+                            Jumlah
+                        </td>
+                        <td>Rp {{ number_format($cont ?? 0) }}</td>
+                    </tr>
                 </tbody>
             </table>
+
             <div class=" flex w-full pl-3  pt-3 border-t border-blue-950">
                 <p>Halaman {{ $transaksi->currentPage() }} Dari {{ $transaksi->lastPage() }} </p>
                 <div class="ml-auto flex text-lg font-bold">

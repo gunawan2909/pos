@@ -6,6 +6,8 @@ use App\Models\kas;
 use App\Models\Menu;
 use App\Models\Pesanan;
 use App\Models\Transaksi;
+use Nette\Utils\DateTime;
+
 use App\Models\PesananList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -19,13 +21,20 @@ class ReservasiController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([]);
+        $date = new DateTime($request->date);
+        $now = new DateTime(now());
+        $rule = 'required';
+        if ($now->diff($date)->d == 0) {
+            $rule = 'required|after_or_equal:now';
+        }
+        
         $data = $request->validate([
             'name' => 'required',
             'no_wa' => 'required',
-            'date' => 'required',
-            'time' => 'required',
+            'date' => 'required|after_or_equal:today',
+            'time' => $rule,
         ]);
+
         $data['status'] = 'Unpaid';
         $data['jumlah'] = 0;
         $data['kind'] = "reservasi";

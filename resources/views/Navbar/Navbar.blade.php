@@ -13,7 +13,7 @@
         </button>
 
         <!-- Brand -->
-        <a href="{{ route('dashboard') }}"
+        <a href="{{ route('home') }}"
             class="inline-block text-2xl font-bold tracking-wider uppercase text-primary-dark dark:text-light">
             <div class=" flex items-center ">
                 <img class=" w-16" src="{{ asset('img/Logo.png') }}" alt="">

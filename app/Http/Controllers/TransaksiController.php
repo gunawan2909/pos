@@ -26,9 +26,14 @@ class TransaksiController extends Controller
             $tahun = $tahun + 1;
             $bulan = 1;
         }
+        if ($hari != 'All') {
+            $laporan = Transaksi::orderBy('created_at', 'asc')->filter(request(['search', 'kind', 'metode']))->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->whereDay('created_at', $hari)->paginate($page);
+        } else {
+            $laporan = Transaksi::orderBy('created_at', 'asc')->filter(request(['search', 'kind', 'metode']))->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->paginate($page);
+        }
 
         return view('Laporan.Index', [
-            'transaksi' => Transaksi::orderBy('created_at', 'asc')->filter(request(['search', 'kind', 'metode']))->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->whereDay('created_at', $hari)->paginate($page),
+            'transaksi' => $laporan,
             'search' => request()->search,
             'page' => $page,
             'panel' => ['laporan', 'laporan'],
