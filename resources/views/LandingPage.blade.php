@@ -276,8 +276,45 @@
                         semangatmu. Contohnya beberapa menu yang kami punya yang tentunya naikin
                         moodmu sehingga bisa semangat buat kerja.</p>
                 </div>
-                <div class="space-y-8 lg:grid lg:grid-cols-5 sm:gap-6 xl:gap-10 lg:space-y-0">
+                <div
+                    class=" grid md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 sm:gap-6 place-items-center place-content-center xl:gap-10">
                     @foreach ($menu as $item)
+                        <div class=" rounded-lg shadow-lg bg-white pb-1 w-40">
+                            <img class=" object-cover rounded-t-lg " src="{{ asset('storage/' . $item->foto) }}"
+                                alt="">
+                            <div method="post" action="" class=" px-2 pb-3  flex flex-col ">
+                                <p class="">{{ $item->name }}</p>
+                                <p class=" truncate  text-[12px]">{{ $item->keterangan }}</p>
+                                <p class=" font-bold mt-3">Rp. {{ number_format($item->harga, 2, ',', '.') }}</p>
+                            </div>
+                        </div>
+                        <div class=" rounded-lg shadow-lg bg-white pb-1 w-40">
+                            <img class=" object-cover rounded-t-lg " src="{{ asset('storage/' . $item->foto) }}"
+                                alt="">
+                            <div method="post" action="" class=" px-2 pb-3  flex flex-col ">
+                                <p class="">{{ $item->name }}</p>
+                                <p class=" truncate  text-[12px]">{{ $item->keterangan }}</p>
+                                <p class=" font-bold mt-3">Rp. {{ number_format($item->harga, 2, ',', '.') }}</p>
+                            </div>
+                        </div>
+                        <div class=" rounded-lg shadow-lg bg-white pb-1 w-40">
+                            <img class=" object-cover rounded-t-lg " src="{{ asset('storage/' . $item->foto) }}"
+                                alt="">
+                            <div method="post" action="" class=" px-2 pb-3  flex flex-col ">
+                                <p class="">{{ $item->name }}</p>
+                                <p class=" truncate  text-[12px]">{{ $item->keterangan }}</p>
+                                <p class=" font-bold mt-3">Rp. {{ number_format($item->harga, 2, ',', '.') }}</p>
+                            </div>
+                        </div>
+                        <div class=" rounded-lg shadow-lg bg-white pb-1 w-40">
+                            <img class=" object-cover rounded-t-lg " src="{{ asset('storage/' . $item->foto) }}"
+                                alt="">
+                            <div method="post" action="" class=" px-2 pb-3  flex flex-col ">
+                                <p class="">{{ $item->name }}</p>
+                                <p class=" truncate  text-[12px]">{{ $item->keterangan }}</p>
+                                <p class=" font-bold mt-3">Rp. {{ number_format($item->harga, 2, ',', '.') }}</p>
+                            </div>
+                        </div>
                         <div class=" rounded-lg shadow-lg bg-white pb-1 w-40">
                             <img class=" object-cover rounded-t-lg " src="{{ asset('storage/' . $item->foto) }}"
                                 alt="">

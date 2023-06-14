@@ -186,8 +186,6 @@ class ReservasiController extends Controller
     public function callbackpayout(Request $request)
     {
         $serverKey = config('midtrans.serverKey');
-
-
         $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
         if ($hashed == $request->signature_key) {
             if ($request->transaction_status == 'capture') {

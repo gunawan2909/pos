@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\kas;
 use App\Models\Menu;
+use App\Jobs\StruckJob;
 use App\Models\Pesanan;
+use App\Models\Transaksi;
 use App\Events\PesananPaid;
 use App\Models\PesananList;
-use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Contracts\Cache\Store;
@@ -25,7 +26,7 @@ class PesananController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'jumlah' => 'required',
-            'no_wa' => 'required'
+            'email' => 'required|email'
         ]);
         $data['status'] = 'Unpaid';
         $data['date'] = now();
@@ -158,8 +159,9 @@ class PesananController extends Controller
             'metode' => "Tunai",
         ]);
         event(new PesananPaid($id));
-        $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.status', ['id' => $id])  . '*  Terima kasih atas perhatian Anda.';
-        Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan->no_wa, 'message' => $massage]);
+        dispatch(new StruckJob($id));
+        // $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.status', ['id' => $id])  . '*  Terima kasih atas perhatian Anda.';
+        // Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan->no_wa, 'message' => $massage]);
         return redirect(route('pesanan.pesanan.index'));
     }
     public function payCustomer($id)
@@ -194,8 +196,10 @@ class PesananController extends Controller
                     ]);
                     $kas = kas::where('name', 'non tunai')->get()[0]->nominal  +  $request->gross_amount;
                     kas::where('name', 'non tunai')->update(['nominal' => $kas]);
-                    $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.status', ['id' => $data[1]])  . '*  Terima kasih atas perhatian Anda.';
-                    Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan->no_wa, 'message' => $massage]);
+                    dispatch(new StruckJob($data[1]));
+
+                    // $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.status', ['id' => $data[1]])  . '*  Terima kasih atas perhatian Anda.';
+                    // Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan->no_wa, 'message' => $massage]);
                 }
                 if ($data[0] == 'po') {
                     $pesanan = Pesanan::where('id', $data[1])->get()[0];
@@ -212,8 +216,10 @@ class PesananController extends Controller
                     $kas = kas::where('name', 'non tunai')->get()[0]->nominal  +  $request->gross_amount;
                     kas::where('name', 'non tunai')->update(['nominal' => $kas]);
                     event(new PesananPaid($data[1]));
-                    $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.status', ['id' => $data[1]])  . '*  Terima kasih atas perhatian Anda.';
-                    Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan->no_wa, 'message' => $massage]);
+                    dispatch(new StruckJob($data[1]));
+
+                    // $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.status', ['id' => $data[1]])  . '*  Terima kasih atas perhatian Anda.';
+                    // Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan->no_wa, 'message' => $massage]);
                 }
             }
         }

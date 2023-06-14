@@ -1,26 +1,30 @@
 <?php
 
-use App\Events\PesananPaid;
 use App\Models\Menu;
+use App\Jobs\StuckJob;
 use App\Models\Pesanan;
 use GuzzleHttp\Middleware;
+use App\Events\PesananPaid;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\BendaharaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReservasiController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DataSantriController;
 use App\Http\Controllers\PersediaanController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\JabatanController;
-use App\Http\Controllers\TransaksiController;
+use App\Jobs\StruckJob;
+use App\Mail\SendStruk;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +47,9 @@ Route::get('/', function () {
 Route::get('/karyawan', function () {
     return view('Auth.Karyawan');
 })->name('karyawan');
+Route::get('/tes', function () {
+    // Mail::to('gunawan@gmail.com')->send(new SendStruk(1));
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');

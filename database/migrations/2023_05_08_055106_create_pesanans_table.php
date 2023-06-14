@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 50);
             $table->integer('jumlah')->lenght(4);
-            $table->string('no_wa', 15)->nullable();
+            // $table->string('no_wa', 15)->nullable();
+            $table->string('email', 70)->nullable();
             $table->string('kind', 20)->nullable();
             $table->date('date');
             $table->time('time');
