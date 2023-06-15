@@ -52,7 +52,7 @@ Route::get('/tes', function () {
     // $email = Pesanan::where('id', 1)->get()[0]->email;
     // $id = Pesanan::where('id', 1)->get()[0]->id;
     // Mail::to($email)->send(new SendStruk($id));
-    dispatch(new StruckJob(16));
+    dispatch(new StruckJob(1));
     return "sukses";
 });
 

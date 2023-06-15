@@ -2,14 +2,16 @@
 
 namespace App\Events;
 
+use App\Mail\SendStruk;
 use App\Models\Pesanan;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class PesananPaid implements ShouldBroadcast
 {
@@ -46,6 +48,8 @@ class PesananPaid implements ShouldBroadcast
     private function data()
     {
         $pesanan = Pesanan::where('id', $this->pesan_id)->get()[0];
+        Mail::to($pesanan->email)->send(new SendStruk($pesanan->id));
+
         $html = '  <div class=" bg-white border-y-2 p-2 my-3 rounded-md">
         <div class="flex">
             <div class=" flex">
