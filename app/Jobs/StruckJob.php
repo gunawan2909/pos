@@ -29,6 +29,6 @@ class StruckJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->pesanan->email)->send(new SendStruk($this->pesanan->id));
+        // Mail::to($this->pesanan->email)->send(new SendStruk($this->pesanan->id));
     }
 }
