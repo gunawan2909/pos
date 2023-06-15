@@ -48,7 +48,7 @@ Route::get('/karyawan', function () {
     return view('Auth.Karyawan');
 })->name('karyawan');
 Route::get('/tes', function () {
-    // Mail::to('gunawan@gmail.com')->send(new SendStruk(1));
+    Mail::to('gunawan@gmail.com')->send(new SendStruk(16));
     dispatch(new StruckJob(16));
 });
 
