@@ -82,14 +82,14 @@ class PesananController extends Controller
 
             $params = array(
                 'transaction_details' => array(
-                    'order_id' => "po" . $pesanan->id . "-" . rand(),
+                    'order_id' => "po-" . $pesanan->id . "-" . rand(),
                     'gross_amount' => $total,
                 ),
                 'customer_details' => array(
                     'first_name' => $pesanan->name,
                     'last_name' => '',
 
-                    'phone' => $pesanan->no_wa,
+                    
                 ),
             );
             $snapToken = \Midtrans\Snap::getSnapToken($params);
@@ -125,7 +125,6 @@ class PesananController extends Controller
                     'first_name' => $pesanan->name,
                     'last_name' => '',
 
-                    'phone' => $pesanan->no_wa,
                 ),
             );
 
