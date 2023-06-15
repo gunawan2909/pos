@@ -49,7 +49,7 @@ Route::get('/karyawan', function () {
 })->name('karyawan');
 Route::get('/tes', function () {
     // Mail::to('gunawan@gmail.com')->send(new SendStruk(1));
-    dispatch(new StruckJob(1));
+    dispatch(new StruckJob(16));
 });
 
 Route::middleware('guest')->group(function () {
