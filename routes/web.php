@@ -50,7 +50,8 @@ Route::get('/karyawan', function () {
 Route::get('/tes', function () {
     // Mail::to('gunawan@gmail.com')->send(new SendStruk(1));
     $pesanan = Pesanan::where('id', 16)->get()[0];
-    Mail::to($pesanan->email)->send(new SendStruk($pesanan->id));
+    // Mail::to($pesanan->email)->send(new SendStruk($pesanan->id));
+    return "sukses";
 
     // dispatch(new StruckJob(16));
 });
