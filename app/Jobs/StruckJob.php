@@ -33,8 +33,8 @@ class StruckJob implements ShouldQueue
     {
         // $email = Pesanan::where('id', 1)->get()[0]->email;
         // $id = Pesanan::where('id', 1)->get()[0]->id;
-        // Mail::to($email)->send(new SendStruk($id));
-        Mail::to('gunawan@gmail.com')->send(new SendStruk(16));
+        Mail::to($this->email)->send(new SendStruk($this->id));
+        // Mail::to('gunawan@gmail.com')->send(new SendStruk(16));
 
         // Mail::to($this->email)->send(new SendStruk($this->id));
     }
