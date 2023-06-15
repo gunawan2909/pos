@@ -82,7 +82,7 @@ class PesananController extends Controller
 
             $params = array(
                 'transaction_details' => array(
-                    'order_id' => "c" . $pesanan->id . "-" . rand(),
+                    'order_id' => "po" . $pesanan->id . "-" . rand(),
                     'gross_amount' => $total,
                 ),
                 'customer_details' => array(
