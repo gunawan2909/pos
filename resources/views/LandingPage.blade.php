@@ -288,42 +288,6 @@
                                 <p class=" font-bold mt-3">Rp. {{ number_format($item->harga, 2, ',', '.') }}</p>
                             </div>
                         </div>
-                        <div class=" rounded-lg shadow-lg bg-white pb-1 w-40">
-                            <img class=" object-cover rounded-t-lg " src="{{ asset('storage/' . $item->foto) }}"
-                                alt="">
-                            <div method="post" action="" class=" px-2 pb-3  flex flex-col ">
-                                <p class="">{{ $item->name }}</p>
-                                <p class=" truncate  text-[12px]">{{ $item->keterangan }}</p>
-                                <p class=" font-bold mt-3">Rp. {{ number_format($item->harga, 2, ',', '.') }}</p>
-                            </div>
-                        </div>
-                        <div class=" rounded-lg shadow-lg bg-white pb-1 w-40">
-                            <img class=" object-cover rounded-t-lg " src="{{ asset('storage/' . $item->foto) }}"
-                                alt="">
-                            <div method="post" action="" class=" px-2 pb-3  flex flex-col ">
-                                <p class="">{{ $item->name }}</p>
-                                <p class=" truncate  text-[12px]">{{ $item->keterangan }}</p>
-                                <p class=" font-bold mt-3">Rp. {{ number_format($item->harga, 2, ',', '.') }}</p>
-                            </div>
-                        </div>
-                        <div class=" rounded-lg shadow-lg bg-white pb-1 w-40">
-                            <img class=" object-cover rounded-t-lg " src="{{ asset('storage/' . $item->foto) }}"
-                                alt="">
-                            <div method="post" action="" class=" px-2 pb-3  flex flex-col ">
-                                <p class="">{{ $item->name }}</p>
-                                <p class=" truncate  text-[12px]">{{ $item->keterangan }}</p>
-                                <p class=" font-bold mt-3">Rp. {{ number_format($item->harga, 2, ',', '.') }}</p>
-                            </div>
-                        </div>
-                        <div class=" rounded-lg shadow-lg bg-white pb-1 w-40">
-                            <img class=" object-cover rounded-t-lg " src="{{ asset('storage/' . $item->foto) }}"
-                                alt="">
-                            <div method="post" action="" class=" px-2 pb-3  flex flex-col ">
-                                <p class="">{{ $item->name }}</p>
-                                <p class=" truncate  text-[12px]">{{ $item->keterangan }}</p>
-                                <p class=" font-bold mt-3">Rp. {{ number_format($item->harga, 2, ',', '.') }}</p>
-                            </div>
-                        </div>
                     @endforeach
                 </div>
             </div>
