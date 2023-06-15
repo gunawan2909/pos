@@ -52,9 +52,8 @@ Route::get('/tes', function () {
     // $email = Pesanan::where('id', 1)->get()[0]->email;
     // $id = Pesanan::where('id', 1)->get()[0]->id;
     // Mail::to($email)->send(new SendStruk($id));
-    return "sukses";
-
     dispatch(new StruckJob(16));
+    return "sukses";
 });
 
 Route::middleware('guest')->group(function () {
