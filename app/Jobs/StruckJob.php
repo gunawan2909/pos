@@ -15,13 +15,15 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 class StruckJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    public $pesanan;
+    public $id;
+    public $email;
     /**
      * Create a new job instance.
      */
     public function __construct($id)
     {
-        $this->pesanan = Pesanan::where('id', $id)->get()[0];
+        $this->id = Pesanan::where('id', $id)->get()[0]->id;
+        $this->email = Pesanan::where('id', $id)->get()[0]->email;
     }
 
     /**
@@ -29,6 +31,9 @@ class StruckJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->pesanan->email)->send(new SendStruk($this->pesanan->id));
+        $email = Pesanan::where('id', 1)->get()[0]->email;
+        $id = Pesanan::where('id', 1)->get()[0]->id;
+        Mail::to($email)->send(new SendStruk($id));
+        Mail::to($this->email)->send(new SendStruk($this->id));
     }
 }

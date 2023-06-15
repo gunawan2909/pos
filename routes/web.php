@@ -49,12 +49,12 @@ Route::get('/karyawan', function () {
 })->name('karyawan');
 Route::get('/tes', function () {
     // Mail::to('gunawan@gmail.com')->send(new SendStruk(1));
-    $email = Pesanan::where('id', 16)->get()[0]->email;
-    $id = Pesanan::where('id', 16)->get()[0]->id;
-    Mail::to($email)->send(new SendStruk($id));
+    // $email = Pesanan::where('id', 1)->get()[0]->email;
+    // $id = Pesanan::where('id', 1)->get()[0]->id;
+    // Mail::to($email)->send(new SendStruk($id));
     return "sukses";
 
-    // dispatch(new StruckJob(16));
+    dispatch(new StruckJob(16));
 });
 
 Route::middleware('guest')->group(function () {
