@@ -1,9 +1,17 @@
-@extends('Layout.App')
-@section('content')
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
     <div x-data="setup()" x-init="$refs.loading.classList.add('hidden');
     setColors(color);">
         <!-- Loading screen -->
-     
+
         <div
             class="flex flex-col items-center justify-center min-h-screen  antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
 
@@ -71,4 +79,6 @@
         </div>
 
     </div>
-@endsection
+</body>
+
+</html>
