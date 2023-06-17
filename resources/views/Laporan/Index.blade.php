@@ -145,6 +145,9 @@
                 </thead>
                 <tbody>
 
+                    @php
+                           $cont = 0;
+                    @endphp
                     @foreach ($transaksi as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
@@ -159,7 +162,7 @@
                             <td>{{ $item->status }}</td>
                         </tr>
                         @php
-                            $cont = 0;
+                         
                             if ($item->kind == 500) {
                                 $cont -= $item->nominal;
                             } else {
