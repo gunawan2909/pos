@@ -30,7 +30,7 @@ class ReservasiController extends Controller
         
         $data = $request->validate([
             'name' => 'required',
-            'no_wa' => 'required',
+            'email' => 'required|email',
             'date' => 'required|after_or_equal:today',
             'time' => $rule,
         ]);
