@@ -89,7 +89,7 @@ class PesananController extends Controller
                     'first_name' => $pesanan->name,
                     'last_name' => '',
 
-                    
+
                 ),
             );
             $snapToken = \Midtrans\Snap::getSnapToken($params);
@@ -238,8 +238,32 @@ class PesananController extends Controller
 
     public function index()
     {
+        $page = request(['pagination'][0]) ?? 10;
+        $hari = request(['hari'][0]) ?? date('d');
+        $bulan = request(['bulan'][0]) ?? date('m');
+        $tahun = request(['tahun'][0]) ?? date('Y');
+
+
+        if ($bulan == 0) {
+            $tahun = $tahun - 1;
+            $bulan = 12;
+        }
+        if ($bulan == 13) {
+            $tahun = $tahun + 1;
+            $bulan = 1;
+        }
+        if ($hari != 'All') {
+            $pesanan = Pesanan::latest()->filter(request(['search']))->where('kind', 'no_reservasi')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->whereDay('created_at', $hari)->paginate($page);
+        } else {
+            $pesanan = Pesanan::latest()->filter(request(['search']))->where('kind', 'no_reservasi')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->paginate($page);
+        }
         return view('Pesanan.Index', [
-            'pesanan' => Pesanan::latest()->where('kind', 'no_reservasi')->get(),
+            'pesanan' => $pesanan,
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'hari' => $hari,
+            'search' => request('search'),
+            'page' => $page,
             'panel' => ['pesanan', 'no_reservasi']
         ]);
     }

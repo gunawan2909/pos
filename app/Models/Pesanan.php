@@ -14,4 +14,10 @@ class Pesanan extends Model
     {
         return $this->hasMany(PesananList::class, 'pesanan_id', 'id');
     }
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%');
+        });
+    }
 }

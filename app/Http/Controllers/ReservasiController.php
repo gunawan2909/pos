@@ -27,7 +27,7 @@ class ReservasiController extends Controller
         if ($now->diff($date)->d == 0) {
             $rule = 'required|after_or_equal:now';
         }
-        
+
         $data = $request->validate([
             'name' => 'required',
             'email' => 'required|email',
@@ -246,8 +246,32 @@ class ReservasiController extends Controller
 
     public function index()
     {
+        $page = request(['pagination'][0]) ?? 10;
+        $hari = request(['hari'][0]) ?? date('d');
+        $bulan = request(['bulan'][0]) ?? date('m');
+        $tahun = request(['tahun'][0]) ?? date('Y');
+
+
+        if ($bulan == 0) {
+            $tahun = $tahun - 1;
+            $bulan = 12;
+        }
+        if ($bulan == 13) {
+            $tahun = $tahun + 1;
+            $bulan = 1;
+        }
+        if ($hari != 'All') {
+            $pesanan = Pesanan::latest()->filter(request(['search']))->where('kind', 'reservasi')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->whereDay('created_at', $hari)->paginate($page);
+        } else {
+            $pesanan = Pesanan::latest()->filter(request(['search']))->where('kind', 'reservasi')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->paginate($page);
+        }
         return view('Reservasi.Index', [
-            'pesanan' => Pesanan::latest()->where('kind', 'reservasi')->get(),
+            'pesanan' => $pesanan,
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'hari' => $hari,
+            'search' => request('search'),
+            'page' => $page,
             'panel' => ['pesanan', 'reservasi']
         ]);
     }
