@@ -56,7 +56,8 @@
                     $jumlah += $item->jumlah;
                 @endphp
                 <div class="flex my-3 border-y-2 p-1">
-                    <img class="w-24 rounded-md " src="{{ asset('storage/' . $item->menu->foto) }}" alt="">
+                    <img class="w-24 rounded-md {{ $item->menu->status == 0 ? 'opacity-30' : '' }}"
+                        src="{{ asset('storage/' . $item->menu->foto) }}" alt="">
                     <div class="ml-3">
                         <p class=" {{ $item->menu->status == 0 ? 'bg-red-400 px-3 rounded-md' : '' }}">
                             {{ $item->menu->name }}</p>
