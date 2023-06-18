@@ -212,6 +212,24 @@ class PesananController extends Controller
                         'status' => "Sukses",
                         'metode' => "No Tunai",
                     ]);
+                    $totalDis = 0;
+                    foreach ($pesanan->list as $item) {
+                        if ($item->menu->status == 0) {
+                            $totalDis += ($item->menu->harga * $item->jumlah);
+                        }
+                    }
+                    if ($totalDis > 0) {
+                        $keteranganDis = "Return Penjualan " . $pesanan->name;
+                        $kindDis = "500";
+                        Transaksi::create([
+                            'keterangan' => $keteranganDis,
+                            'kind' => $kindDis,
+                            'nominal' => $totalDis,
+                            'status' => "Sukses",
+                            'metode' => "Tunai",
+
+                        ]);
+                    }
                     $kas = kas::where('name', 'non tunai')->get()[0]->nominal  +  $request->gross_amount;
                     kas::where('name', 'non tunai')->update(['nominal' => $kas]);
                     event(new PesananPaid($data[1]));
@@ -242,6 +260,7 @@ class PesananController extends Controller
         $hari = request(['hari'][0]) ?? date('d');
         $bulan = request(['bulan'][0]) ?? date('m');
         $tahun = request(['tahun'][0]) ?? date('Y');
+        $status = request(['status'][0]) ?? '';
 
 
         if ($bulan == 0) {
@@ -253,12 +272,13 @@ class PesananController extends Controller
             $bulan = 1;
         }
         if ($hari != 'All') {
-            $pesanan = Pesanan::latest()->filter(request(['search']))->where('kind', 'no_reservasi')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->whereDay('created_at', $hari)->paginate($page);
+            $pesanan = Pesanan::latest()->filter(request(['search', 'status']))->where('kind', 'no_reservasi')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->whereDay('created_at', $hari)->paginate($page);
         } else {
-            $pesanan = Pesanan::latest()->filter(request(['search']))->where('kind', 'no_reservasi')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->paginate($page);
+            $pesanan = Pesanan::latest()->filter(request(['search', 'status']))->where('kind', 'no_reservasi')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->paginate($page);
         }
         return view('Pesanan.Index', [
             'pesanan' => $pesanan,
+            'status' => $status,
             'bulan' => $bulan,
             'tahun' => $tahun,
             'hari' => $hari,

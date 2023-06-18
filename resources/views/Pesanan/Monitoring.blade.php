@@ -26,6 +26,11 @@
 
                 </div>
                 @foreach ($pesanan->list as $item)
+                    @php
+                        if ($item->menu->statu == 0) {
+                            continue;
+                        }
+                    @endphp
                     <div class="flex my-3 border-y-2 p-1 ">
                         <img class="w-24 rounded-md " src="{{ asset('storage/' . $item->menu->foto) }}" alt="">
                         <div class="ml-3">

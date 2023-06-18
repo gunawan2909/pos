@@ -31,6 +31,15 @@ class TransaksiController extends Controller
         } else {
             $laporan = Transaksi::orderBy('created_at', 'asc')->filter(request(['search', 'kind', 'metode']))->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->paginate($page);
         }
+        $total = 0;
+        foreach (Transaksi::all() as $item) {
+            if ($item->kind == 500) {
+                $total -= $item->nominal;
+            } else {
+                $total += $item->nominal;
+            }
+        }
+
 
         return view('Laporan.Index', [
             'transaksi' => $laporan,
@@ -42,6 +51,7 @@ class TransaksiController extends Controller
             'hari' => $hari,
             'kind' => $kind,
             'metode' => $metode,
+            'total' => $total,
             'kas' => kas::all()
         ]);
     }

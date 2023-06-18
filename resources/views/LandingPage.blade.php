@@ -255,12 +255,12 @@
         <!-- Start block -->
         <section class="bg-gray-50 dark:bg-gray-800">
             <div class="max-w-screen-xl px-4 py-8 mx-auto lg:py-16 lg:px-6">
-                <div class="max-w-screen-sm mx-auto text-center">
+                <div class="text-center">
                     <h2 class="mb-4 text-3xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white">
                         Ayo pesan</h2>
 
                     <a href="{{ route('pesanan.reservasi.add') }}"
-                        class="text-white bg-primary hover:bg-blue-950 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-blue-950">
+                        class="text-white bg-primary hover:bg-blue-950 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-blue-950">
                         Reservasi</a>
                     <a href="{{ route('pesanan.add') }}"
                         class="text-white  bg-primary hover:bg-blue-950 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-blue-950">
@@ -429,12 +429,12 @@
         <!-- Start block -->
         <section class="bg-gray-50 dark:bg-gray-800">
             <div class="max-w-screen-xl px-4 py-8 mx-auto lg:py-16 lg:px-6">
-                <div class="max-w-screen-sm mx-auto text-center">
+                <div class="text-center">
                     <h2 class="mb-4 text-3xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white">
                         Ayo pesan</h2>
 
                     <a href="{{ route('pesanan.reservasi.add') }}"
-                        class="text-white bg-primary hover:bg-blue-950 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-blue-950">
+                        class="w-full  text-white bg-primary hover:bg-blue-950 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-blue-950">
                         Reservasi</a>
                     <a href="{{ route('pesanan.add') }}"
                         class="text-white  bg-primary hover:bg-blue-950 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-purple-600 dark:hover:bg-primary focus:outline-none dark:focus:ring-blue-950">

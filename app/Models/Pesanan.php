@@ -18,6 +18,9 @@ class Pesanan extends Model
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {
             return $query->where('name', 'like', '%' . $search . '%');
-        });
+        })
+            ->when($filters['status'] ?? false, function ($query, $status) {
+                return $query->where('status',  $status);
+            });;
     }
 }

@@ -2,7 +2,10 @@
 
 use App\Models\Menu;
 use App\Jobs\StuckJob;
+use App\Jobs\StruckJob;
+use App\Mail\SendStruk;
 use App\Models\Pesanan;
+use App\Models\Persediaan;
 use GuzzleHttp\Middleware;
 use App\Events\PesananPaid;
 use Illuminate\Auth\Events\Login;
@@ -23,8 +26,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DataSantriController;
 use App\Http\Controllers\PersediaanController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Jobs\StruckJob;
-use App\Mail\SendStruk;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,11 +49,35 @@ Route::get('/karyawan', function () {
     return view('Auth.Karyawan');
 })->name('karyawan');
 Route::get('/tes', function () {
-    // Mail::to('gunawan@gmail.com')->send(new SendStruk(1));
-    // $email = Pesanan::where('id', 1)->get()[0]->email;
-    // $id = Pesanan::where('id', 1)->get()[0]->id;
-    // Mail::to($email)->send(new SendStruk($id));
-    dispatch(new StruckJob(1));
+    foreach (Persediaan::all() as $persediaan) {
+        if ($persediaan->satuan == 'ml') {
+            if ($persediaan->jumlah < 500) {
+                foreach ($persediaan->list as $list) {
+                    foreach ($list->menu as $menu) {
+                        $menu->update(['status' => 0]);
+                    }
+                }
+            }
+        }
+        if ($persediaan->satuan == 'kg') {
+            if ($persediaan->jumlah < 5000) {
+                foreach ($persediaan->list as $list) {
+                    foreach ($list->menu as $menu) {
+                        $menu->update(['status' => 0]);
+                    }
+                }
+            }
+        }
+        if ($persediaan->satuan == 'pcs') {
+            if ($persediaan->jumlah < 50) {
+                foreach ($persediaan->list as $list) {
+                    foreach ($list->menu as $menu) {
+                        $menu->update(['status' => 0]);
+                    }
+                }
+            }
+        }
+    }
     return "sukses";
 });
 

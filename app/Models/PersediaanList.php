@@ -15,4 +15,9 @@ class PersediaanList extends Model
     {
         return  $this->hasOne(Persediaan::class, 'id', 'persediaan_id')->withTrashed();
     }
+
+    public function menu()
+    {
+        return $this->hasMany(Menu::class, 'id', 'menu_id');
+    }
 }

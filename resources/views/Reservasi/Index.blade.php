@@ -91,6 +91,15 @@
                     <option value="100" {{ $page == 100 ? 'selected' : '' }}>100</option>
                     <option value="1000" {{ $page == 1000 ? 'selected' : '' }}>1000</option>
                 </select>
+                <p class=" w-16 ml-10">Status</p>
+                <select name="status" id="" class=" border-2 ml-2 border-slate-400" v>
+                    <option value="">All</option>
+                    <option value="Unpaid" {{ $status == 'Unpaid' ? 'selected' : '' }}>Unpaid</option>
+                    <option value="Down Payment Paid" {{ $status == 'Down Payment Paid' ? 'selected' : '' }}>Down Payment
+                        Paid</option>
+                    <option value="Paid" {{ $status == 'Paid' ? 'selected' : '' }}>Paid</option>
+                    <option value="Completed" {{ $status == 'Completed' ? 'selected' : '' }}>Complited</option>
+                </select>
 
 
                 <button class=" block bg-primary rounded-md p-2 ml-auto text-white " type="submit">Terapkan</button>
@@ -102,6 +111,7 @@
                     <input type="hidden" name="bulan" value="{{ $bulan }}">
                     <input type="hidden" name="tahun" value="{{ $tahun }}">
                     <input type="hidden" name="pagination" value="{{ $page }}">
+                    <input type="hidden" name="status" value="{{ $status }}">
                     <input type="search" name="search" value="{{ $search }}" placeholder="Search... "
                         id="" class="border ml-2 px-2 border-slate-400 rounded-md w-56">
                     <button type="submit"></button>
@@ -140,7 +150,20 @@
 
                 </tbody>
             </table>
+            <div class=" flex w-full pl-3  pt-3 border-t border-blue-950">
+                <p>Halaman {{ $pesanan->currentPage() }} Dari {{ $pesanan->lastPage() }} </p>
+                <div class="ml-auto flex text-lg font-bold">
 
+                    <a
+                        @if ($pesanan->previousPageUrl()) class="mr-10 " href="{{ $pesanan->previousPageUrl() }}&pagination={{ $page }}&search={{ $search }}&bulan={{ $bulan }}&tahun={{ $tahun }}&status={{ $status }}"
+                    @else class="mr-10 text-slate-300" @endif>
+                        < </a>
+
+                            <a
+                                @if ($pesanan->nextPageUrl()) class="mr-10 " href="{{ $pesanan->nextPageUrl() }}&pagination={{ $page }}&search={{ $search }}&bulan={{ $bulan }}&tahun={{ $tahun }}&status={{ $status }}" @else class="mr-10 text-slate-300" @endif>>
+                            </a>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

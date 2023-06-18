@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\kas;
 use App\Models\Menu;
+use App\Jobs\StruckJob;
 use App\Models\Pesanan;
 use App\Models\Transaksi;
-use Nette\Utils\DateTime;
 
+use Nette\Utils\DateTime;
+use App\Events\PesananPaid;
 use App\Models\PesananList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -151,10 +153,15 @@ class ReservasiController extends Controller
         $pesanan = Pesanan::where('id', $id)->get()[0];
         $total = 0;
 
+        $totalDis = 0;
         foreach ($pesanan->list as $item) {
             $total += ($item->menu->harga * $item->jumlah);
+            if ($item->menu->status == 0) {
+                $totalDis += ($item->menu->harga * $item->jumlah);
+            }
         }
-        $total = $total / 2;
+        $total = ($total / 2);
+
         $snapToken = '';
         if ($pesanan->status == 'Down Payment Paid') {
 
@@ -174,11 +181,14 @@ class ReservasiController extends Controller
                     'phone' => $pesanan->no_wa,
                 ),
             );
+
+
             $snapToken = \Midtrans\Snap::getSnapToken($params);
         }
         return view('Reservasi.Reservasi', [
             'pesanan' => Pesanan::where('id', $id)->get()[0],
             'total' => $total,
+            'totalDis' => $totalDis,
             'snapToken' => $snapToken
         ]);
     }
@@ -222,25 +232,44 @@ class ReservasiController extends Controller
     public function pay($id)
     {
         $total = 0;
+        $totalDis = 0;
         $pesanan = Pesanan::where('id', $id)->get()[0];
         foreach ($pesanan->list as $item) {
             $total += ($item->menu->harga * $item->jumlah);
+            if ($item->menu->status == 0) {
+                $totalDis += ($item->menu->harga * $item->jumlah);
+            }
         }
-        $total = $total / 2;
+        $total = ($total / 2);
         Pesanan::where('id', $id)->update(['status' => 'Paid']);
         $kas = kas::where('name', 'tunai')->get()[0]->nominal  +  $total;
         kas::where('name', 'tunai')->update(['nominal' => $kas]);
         $keterangan = "Pendapatan Penjualan / Pelunasan Dp  " . $pesanan->name;
         $kind = "600";
-        $transaksi = Transaksi::create([
+        if ($totalDis > 0) {
+            $keteranganDis = "Return Penjualan " . $pesanan->name;
+            $kindDis = "500";
+            Transaksi::create([
+                'keterangan' => $keteranganDis,
+                'kind' => $kindDis,
+                'nominal' => $totalDis,
+                'status' => "Sukses",
+                'metode' => "Tunai",
+
+            ]);
+        }
+        Transaksi::create([
             'keterangan' => $keterangan,
             'kind' => $kind,
             'nominal' => $total,
             'status' => "Sukses",
             'metode' => "Tunai",
+
         ]);
-        $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.status', ['id' => $id])  . '*  Terima kasih atas perhatian Anda.';
-        Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan->no_wa, 'message' => $massage]);
+        event(new PesananPaid($id));
+        dispatch(new StruckJob($id));
+        // $massage = 'Ini Link bukti pembayaran anda  *' .  route('pesanan.status', ['id' => $id])  . '*  Terima kasih atas perhatian Anda.';
+        // Http::post('https://ppnh.co.id:2053/send-message', ['number' => $pesanan->no_wa, 'message' => $massage]);
         return redirect(route('pesanan.reservasi.index'));
     }
 
@@ -250,6 +279,7 @@ class ReservasiController extends Controller
         $hari = request(['hari'][0]) ?? date('d');
         $bulan = request(['bulan'][0]) ?? date('m');
         $tahun = request(['tahun'][0]) ?? date('Y');
+        $status = request(['status'][0]) ?? '';
 
 
         if ($bulan == 0) {
@@ -261,9 +291,9 @@ class ReservasiController extends Controller
             $bulan = 1;
         }
         if ($hari != 'All') {
-            $pesanan = Pesanan::latest()->filter(request(['search']))->where('kind', 'reservasi')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->whereDay('created_at', $hari)->paginate($page);
+            $pesanan = Pesanan::latest()->filter(request(['search', 'status']))->where('kind', 'reservasi')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->whereDay('created_at', $hari)->paginate($page);
         } else {
-            $pesanan = Pesanan::latest()->filter(request(['search']))->where('kind', 'reservasi')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->paginate($page);
+            $pesanan = Pesanan::latest()->filter(request(['search', 'status']))->where('kind', 'reservasi')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->paginate($page);
         }
         return view('Reservasi.Index', [
             'pesanan' => $pesanan,
@@ -272,6 +302,7 @@ class ReservasiController extends Controller
             'hari' => $hari,
             'search' => request('search'),
             'page' => $page,
+            'status' => $status,
             'panel' => ['pesanan', 'reservasi']
         ]);
     }

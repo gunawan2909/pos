@@ -145,9 +145,7 @@
                 </thead>
                 <tbody>
 
-                    @php
-                        $cont = 0;
-                    @endphp
+
                     @foreach ($transaksi as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
@@ -161,20 +159,12 @@
                             <td>{{ $item->metode }}</td>
                             <td>{{ $item->status }}</td>
                         </tr>
-                        @php
-                            
-                            if ($item->kind == 500) {
-                                $cont -= $item->nominal;
-                            } else {
-                                $cont += $item->nominal;
-                            }
-                        @endphp
                     @endforeach
                     <tr class=" border-t border-black font-bold">
                         <td colspan="3">
                             Jumlah
                         </td>
-                        <td>Rp {{ number_format($cont ?? 0) }}</td>
+                        <td>Rp {{ number_format($total ?? 0) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -184,12 +174,12 @@
                 <div class="ml-auto flex text-lg font-bold">
 
                     <a
-                        @if ($transaksi->previousPageUrl()) class="mr-10 " href="{{ $transaksi->previousPageUrl() }}&pagination={{ $page }}&search={{ $search }}&bulan={{ $bulan }}&tahun={{ $tahun }}&kind={{ $kind }}&metode={{ $tmetode }}"
+                        @if ($transaksi->previousPageUrl()) class="mr-10 " href="{{ $transaksi->previousPageUrl() }}&pagination={{ $page }}&search={{ $search }}&bulan={{ $bulan }}&tahun={{ $tahun }}&kind={{ $kind }}&metode={{ $metode }}"
                     @else class="mr-10 text-slate-300" @endif>
                         < </a>
 
                             <a
-                                @if ($transaksi->nextPageUrl()) class="mr-10 " href="{{ $transaksi->nextPageUrl() }}&pagination={{ $page }}&search={{ $search }}&bulan={{ $bulan }}&tahun={{ $tahun }}&kind={{ $kind }}&metode={{ $tmetode }}" @else class="mr-10 text-slate-300" @endif>>
+                                @if ($transaksi->nextPageUrl()) class="mr-10 " href="{{ $transaksi->nextPageUrl() }}&pagination={{ $page }}&search={{ $search }}&bulan={{ $bulan }}&tahun={{ $tahun }}&kind={{ $kind }}&metode={{ $metode }}" @else class="mr-10 text-slate-300" @endif>>
                             </a>
                 </div>
             </div>
