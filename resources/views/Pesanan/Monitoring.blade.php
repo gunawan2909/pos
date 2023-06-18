@@ -27,7 +27,7 @@
                 </div>
                 @foreach ($pesanan->list as $item)
                     @php
-                        if ($item->menu->statu == 0) {
+                        if ($item->menu->status == 0) {
                             continue;
                         }
                     @endphp
