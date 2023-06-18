@@ -156,7 +156,6 @@ class ReservasiController extends Controller
         $totalDis = 0;
         foreach ($pesanan->list as $item) {
             $total += ($item->menu->harga * $item->jumlah);
-            dd($item->menu);
             if ($item->menu->status == 0) {
                 $totalDis += ($item->menu->harga * $item->jumlah);
             }
