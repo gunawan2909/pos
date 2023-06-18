@@ -70,7 +70,7 @@ class PesananPaid implements ShouldBroadcast
         foreach ($pesanan->list as $item) {
             $html = $html . '
             <div class="flex my-3 border-y-2 p-1 ">
-              <img  src="{{ asset("storage/"' .  $item->menu->foto . ') }}" alt="">
+              <img  src="{{ asset("storage/".' .  $item->menu->foto . ') }}" alt="">
                     <div class="ml-3">
                         <p class=" {{ $item->menu->status == 0 ? ' . "bg-red-400 px-3 rounded-md" . ' : "" }}">
                     <p class=" text-xs">Catatan Khusus : <span class="font-semibold">' . $item->keterangan . '</span>
