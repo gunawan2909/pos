@@ -37,7 +37,7 @@ class PersediaanCommand extends Command
                     }
                 }
             }
-            if ($persediaan->satuan == 'kg') {
+            if ($persediaan->satuan == 'gram') {
                 if ($persediaan->jumlah < 5000) {
                     foreach ($persediaan->list as $list) {
                         foreach ($list->menu as $menu) {
@@ -46,7 +46,7 @@ class PersediaanCommand extends Command
                     }
                 }
             }
-            if ($persediaan->satuan == 'pcs') {
+            if ($persediaan->satuan == 'Pcs') {
                 if ($persediaan->jumlah < 50) {
                     foreach ($persediaan->list as $list) {
                         foreach ($list->menu as $menu) {
