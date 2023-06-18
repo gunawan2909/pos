@@ -56,10 +56,10 @@
                     $jumlah += $item->jumlah;
                 @endphp
                 <div class="flex my-3 border-y-2 p-1">
-                    <img class="w-24 rounded-md " {{ $item->menu->status == 0 ? 'style="opacity: 0.1"' : '' }}
-                        src="{{ asset('storage/' . $item->menu->foto) }}" alt="">
+                    <img class="w-24 rounded-md " src="{{ asset('storage/' . $item->menu->foto) }}" alt="">
                     <div class="ml-3">
-                        <p>{{ $item->menu->name }}</p>
+                        <p class=" {{ $item->menu->status == 0 ? 'bg-red-400 px-3 rounded-md' : '' }}">
+                            {{ $item->menu->name }}</p>
                         <p class=" text-xs">Catatan Khusus : <span class="font-semibold">{{ $item->keterangan }}</span></p>
                         <p class="font-bold">{{ $item->jumlah }} </p>
                     </div>
