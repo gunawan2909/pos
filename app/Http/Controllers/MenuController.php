@@ -102,13 +102,7 @@ class MenuController extends Controller
     public function delete($id)
     {
         $menu = Menu::where('id', $id)->get()[0];
-        if (Menu::where('id', $id)->get()[0]->foto) {
 
-            Storage::delete(Menu::where('id', $id)->get()[0]->foto);
-        }
-        foreach ($menu->persediaan as $item) {
-            $item->delete();
-        }
         $menu->delete();
         return redirect(route('menu'));
     }
