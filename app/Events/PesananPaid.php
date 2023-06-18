@@ -68,11 +68,13 @@ class PesananPaid implements ShouldBroadcast
 
         </div>';
         foreach ($pesanan->list as $item) {
+            $img = asset('storage/' . $item->menu->foto);
+            $class = $pesanan->menu->status == 0 ? "opacity-30" : "";
             $html = $html . '
             <div class="flex my-3 border-y-2 p-1 ">
-              <img  src="{{ asset("storage/".' .  $item->menu->foto . ') }}" alt="">
-                    <div class="ml-3">
-                        <p class=" {{ $item->menu->status == 0 ? ' . "bg-red-400 px-3 rounded-md" . ' : "" }}">
+                <img class="w-24 rounded-md ' . $class . ' " src="' . $img . '" alt="">
+                <div class="ml-3">
+                    <p>' . $item->menu->name . '</p>
                     <p class=" text-xs">Catatan Khusus : <span class="font-semibold">' . $item->keterangan . '</span>
                     </p>
                     <p class="font-bold">' . $item->jumlah . '</p>
