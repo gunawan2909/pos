@@ -29,11 +29,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Gunawan Prasetya',
-            'email' => 'gunawan29092000@gmail.com',
+            'name' => 'Super Admin',
+            'email' => 'superAdmin@gmail.com',
             'jabatan_id' => 1,
-            'password' => bcrypt('@Ind170845')
+            'password' => bcrypt('12345678')
         ]);
+        
         Menu::create(['name' => 'Americano', 'harga' => '10000', 'keterangan' => 'Americano', 'foto' => 'menu/YUdzbhQ18frXkgtfjzy6ZmXlCWunhtrrnRaPZWNL.jpg', 'status' => NULL,]);
         Menu::create(['name' => 'Capucino', 'harga' => '12000', 'keterangan' => 'Capucino', 'foto' => 'menu/dlt1sj8j1XpFML9bbzua0iwQvrJ2GLCCmTxWd90P.jpg', 'status' => '1',]);
         Menu::create(['name' => 'Coffee & Lemon', 'harga' => '14000', 'keterangan' => 'Coffee & Lemon', 'foto' => 'menu/DPDyogn3KmGthXQQx5IL32Mxm50oaRGn9Rq3PFd4.jpg', 'status' => '1',]);
