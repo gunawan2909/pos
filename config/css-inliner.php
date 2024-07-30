@@ -13,6 +13,6 @@ return [
     |
     */
 
-    'css-files' => ['https://ta.circlecafe.site/build/assets/app-9bcb82f7.css'],
+    'css-files' => ['https://project-capston.my.id/build/assets/app-fbdc461f.css'],
 
 ];
